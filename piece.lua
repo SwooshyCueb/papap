@@ -33,7 +33,7 @@ function Piece:renderstg1()
 
                 if bit.band(self.type, PIPE_DOWN) ~= 0 then
                     love.graphics.setColor(160, 160, 160, 255)
-                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*3/4, TILE_W*1/8, TILE_H*3/8)
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*3/4, TILE_W*1/8, TILE_H*1/4)
                     love.graphics.setColor(80, 80, 80, 255)
                     love.graphics.setLineWidth(2)
                     love.graphics.line(TILE_W*7/16, TILE_H*3/4, TILE_W*7/16, TILE_H)
@@ -42,7 +42,7 @@ function Piece:renderstg1()
 
                 if bit.band(self.type, PIPE_UP) ~= 0 then
                     love.graphics.setColor(160, 160, 160, 255)
-                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*3/8)
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*1/4)
                     love.graphics.setColor(80, 80, 80, 255)
                     love.graphics.setLineWidth(2)
                     love.graphics.line(TILE_W*7/16, 0, TILE_W*7/16, TILE_H*1/4)
@@ -51,7 +51,7 @@ function Piece:renderstg1()
 
                 if bit.band(self.type, PIPE_LEFT) ~= 0 then
                     love.graphics.setColor(160, 160, 160, 255)
-                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*3/8, TILE_H*1/8)
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
                     love.graphics.setColor(80, 80, 80, 255)
                     love.graphics.setLineWidth(2)
                     love.graphics.line(0, TILE_H*7/16, TILE_W*1/4, TILE_H*7/16)
@@ -60,12 +60,69 @@ function Piece:renderstg1()
 
                 if bit.band(self.type, PIPE_RIGHT) ~= 0 then
                     love.graphics.setColor(160, 160, 160, 255)
-                    love.graphics.rectangle('fill', TILE_W*3/4, TILE_H*7/16, TILE_W*3/8, TILE_H*1/8)
+                    love.graphics.rectangle('fill', TILE_W*3/4, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
                     love.graphics.setColor(80, 80, 80, 255)
                     love.graphics.setLineWidth(2)
-                    love.graphics.line(TILE_W*3/4, TILE_H*7/16, TILE_W*1/4, TILE_H*7/16)
-                    love.graphics.line(TILE_W*3/4, TILE_H*9/16, TILE_W*1/4, TILE_H*9/16)
+                    love.graphics.line(TILE_W*3/4, TILE_H*7/16, TILE_W, TILE_H*7/16)
+                    love.graphics.line(TILE_W*3/4, TILE_H*9/16, TILE_W, TILE_H*9/16)
                 end
+            end
+
+            if bit.band(self.type, bit.bor(PIECE_SRC, PIECE_PIPE)) ~= 0 then
+                if bit.band(self.type, PIPE_DOWN) ~= 0 then
+                    love.graphics.setColor(160, 160, 160, 255)
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*1/8, TILE_H*9/16)
+                    love.graphics.setColor(80, 80, 80, 255)
+                    love.graphics.setLineWidth(2)
+                    love.graphics.line(TILE_W*7/16, TILE_H*9/16, TILE_W*7/16, TILE_H)
+                    love.graphics.line(TILE_W*9/16, TILE_H*9/16, TILE_W*9/16, TILE_H)
+                end
+
+                if bit.band(self.type, PIPE_UP) ~= 0 then
+                    love.graphics.setColor(160, 160, 160, 255)
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*9/16)
+                    love.graphics.setColor(80, 80, 80, 255)
+                    love.graphics.setLineWidth(2)
+                    love.graphics.line(TILE_W*7/16, 0, TILE_W*7/16, TILE_H*7/16)
+                    love.graphics.line(TILE_W*9/16, 0, TILE_W*9/16, TILE_H*7/16)
+                end
+
+                if bit.band(self.type, PIPE_LEFT) ~= 0 then
+                    love.graphics.setColor(160, 160, 160, 255)
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
+                    love.graphics.setColor(80, 80, 80, 255)
+                    love.graphics.setLineWidth(2)
+                    love.graphics.line(0, TILE_H*7/16, TILE_W*7/16, TILE_H*7/16)
+                    love.graphics.line(0, TILE_H*9/16, TILE_W*7/16, TILE_H*9/16)
+                end
+
+                if bit.band(self.type, PIPE_RIGHT) ~= 0 then
+                    love.graphics.setColor(160, 160, 160, 255)
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
+                    love.graphics.setColor(80, 80, 80, 255)
+                    love.graphics.setLineWidth(2)
+                    love.graphics.line(TILE_W*9/16, TILE_H*7/16, TILE_W, TILE_H*7/16)
+                    love.graphics.line(TILE_W*9/16, TILE_H*9/16, TILE_W, TILE_H*9/16)
+                end
+
+                if bit.band(self.type, bit.bor(PIPE_DOWN, PIPE_UP)) ~= 0 then
+                    if bit.band(self.type, PIPE_LEFT) == 0 then
+                        love.graphics.line(TILE_W*7/16, TILE_H*9/16, TILE_W*7/16, TILE_H*7/16)
+                    end
+                    if bit.band(self.type, PIPE_RIGHT) == 0 then
+                        love.graphics.line(TILE_W*9/16, TILE_H*9/16, TILE_W*9/16, TILE_H*7/16)
+                    end
+                end
+
+                if bit.band(self.type, bit.bor(PIPE_LEFT, PIPE_RIGHT)) ~= 0 then
+                    if bit.band(self.type, PIPE_UP) == 0 then
+                        love.graphics.line(TILE_W*9/16, TILE_H*7/16, TILE_W*7/16, TILE_H*7/16)
+                    end
+                    if bit.band(self.type, PIPE_DOWN) == 0 then
+                        love.graphics.line(TILE_W*9/16, TILE_H*9/16, TILE_W*7/16, TILE_H*9/16)
+                    end
+                end
+
             end
 
             if bit.band(self.type, PIECE_SRC) ~= 0 then

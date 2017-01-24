@@ -28,6 +28,7 @@ function love.load(arg)
     love.keyboard.setKeyRepeat(false)
 
     field:set(3, 3, Piece(bit.bor(PIECE_DEST, PIPE_DOWN)))
+    -- field:set(3, 3, Piece(bit.bor(PIECE_DEST, PIPE_CROSS)))
     field:set(7, 5, Piece(bit.bor(PIECE_SRC, PIPE_LEFT)))
     currg:set(1, 1, Piece(bit.bor(PIECE_PIPE, PIPE_VERTICAL)))
     nextg:set(1, 1, Piece(bit.bor(PIECE_PIPE, PIPE_ANGLE_LEFTDOWN)))
