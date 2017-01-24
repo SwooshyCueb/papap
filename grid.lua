@@ -1,5 +1,9 @@
 require('common')
 require('extern/class')
+require('piece')
+if not pcall(function() bit =  require('bit32') end) then
+    bit = require('extern/numberlua')
+end
 
 Grid = class()
 function Grid:init(sz_x, sz_y)
@@ -9,11 +13,12 @@ function Grid:init(sz_x, sz_y)
     for xpos = 0, self.sz.x-1 do
         self.map[xpos] = {}
         for ypos = 0, self.sz.y-1 do
-            self.map[xpos][ypos] = PIECE_NONE
+            self.map[xpos][ypos] = Piece(PIECE_NONE)
         end
     end
 
     self.basecanvas = love.graphics.newCanvas(self.sz.x*TILE_W, self.sz.y*TILE_H)
+    self.pipecanvas = love.graphics.newCanvas(self.sz.x*TILE_W, self.sz.y*TILE_H)
     self.canvas = love.graphics.newCanvas(self.sz.x*TILE_W, self.sz.y*TILE_H)
     self:render()
 
@@ -58,7 +63,19 @@ function Grid:renderstg1()
 end
 
 function Grid:renderstg2()
-
+    love.graphics.setCanvas(self.pipecanvas)
+        love.graphics.clear()
+        love.graphics.setBlendMode("alpha")
+        love.graphics.setColor(255, 255, 255, 255)
+        love.graphics.draw(self.basecanvas)
+        for xpos = 0, self.sz.x-1 do
+            for ypos = 0, self.sz.y-1 do
+                if bit.band(self.map[xpos][ypos].type, PIECE_NONE) == 0 then
+                    love.graphics.draw(self.map[xpos][ypos].canvas, xpos*TILE_W, ypos*TILE_H)
+                end
+            end
+        end
+    love.graphics.setCanvas()
 end
 
 function Grid:renderstg3()
@@ -66,7 +83,7 @@ function Grid:renderstg3()
         love.graphics.clear()
         love.graphics.setBlendMode("alpha")
         love.graphics.setColor(255, 255, 255, 255)
-        love.graphics.draw(self.basecanvas)
+        love.graphics.draw(self.pipecanvas)
         love.graphics.setLineWidth(3)
         if (self.selected.x*self.selected.y) ~= 0 then
             love.graphics.setColor(184, 184, 0, 184)

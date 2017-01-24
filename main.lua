@@ -1,7 +1,7 @@
 require("common")
 require("grid")
-if not pcall(function() require('bit32') end) then
-    require('extern/numberlua')
+if not pcall(function() bit = require('bit32') end) then
+    bit = require('extern/numberlua')
 end
 
 debug = true
