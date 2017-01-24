@@ -15,6 +15,8 @@ selchgcounter = 1.5
 -- bgimg = nil
 
 function love.load(arg)
+    gen_piece_images()
+
     field = Grid(8, 8)
     nextg = Grid(4, 1)
     currg = Grid(1, 1)

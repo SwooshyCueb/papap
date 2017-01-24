@@ -5,6 +5,7 @@ PIECE_NONE           = 0x001
 PIECE_PIPE           = 0x002
 PIECE_SRC            = 0x004
 PIECE_DEST           = 0x008
+PIECE_SPILL          = 0x003
 
 PIPE_UP              = 0x010
 PIPE_DOWN            = 0x020
@@ -32,3 +33,4 @@ PIPE_ANGLE_LEFTDOWN  = 0x0A0
 PIPE_ANGLE_UPRIGHT   = 0x050
 PIPE_ANGLE_DOWNRIGHT = 0x060
 ]]--
+
