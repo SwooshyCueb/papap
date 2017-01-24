@@ -1,7 +1,16 @@
+require("common")
+require("grid")
+
 debug = true
 
-function love.load(arg)
+field = nil
+nextg = nil
+currg = nil
 
+function love.load(arg)
+    field = Grid(8, 8)
+    nextg = Grid(4, 1)
+    currg = Grid(1, 1)
 end
 
 function love.update(dt)
@@ -9,22 +18,13 @@ function love.update(dt)
 end
 
 function love.draw(dt)
-    field_x = 8
-    field_y = 8
-
-    -- Grid where pipes are placed
-    for xpos=0,field_x-1,1 do
-        for ypos=0,field_y-1,1 do
-            love.graphics.rectangle("line", 8+(xpos*64), 8+(ypos*64), 64, 64)
-        end
-    end
+    -- grid where pipes are placed
+    love.graphics.draw(field.canvas, 8, 8)
 
     -- Slot for active pipe section
-    love.graphics.rectangle("line", 8, 16+(field_y*64), 64, 64)
+    love.graphics.draw(currg.canvas, 8, 16+(8*32))
 
     -- Slots for upcoming pipe sections
-    for xpos=1,4,1 do
-        love.graphics.rectangle("line", 8+((field_x-xpos)*64), 16+(field_y*64), 64, 64)
-    end
+    love.graphics.draw(nextg.canvas, 8+(4*32), 16+(8*32))
 
 end
