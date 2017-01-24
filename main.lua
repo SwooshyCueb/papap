@@ -7,6 +7,7 @@ field = nil
 nextg = nil
 currg = nil
 
+selchgcounter = 1.5
 -- bgimg = nil
 
 function love.load(arg)
@@ -17,6 +18,32 @@ function love.load(arg)
     field:select(1, 1)
 
     -- bgimg = love.graphics.newImage("assets/images/background_placeholder.jpg")
+
+    love.keyboard.setKeyRepeat(false)
+end
+
+function love.keypressed(key, sc, rpt)
+    btnpressed(key, sc, rpt, nil)
+end
+
+function love.gamepadpressed(js, btn)
+    btnpressed(nil, nil, nil, btn)
+end
+
+function btnpressed(key, sc, rpt, btn)
+    if key == 'left' or sc == 'a' or btn == "dpleft" then
+        field:select(field.selected.x - 1, -1)
+    end
+    if key == 'right' or sc == 'd' or btn == "dpright" then
+        field:select(field.selected.x + 1, -1)
+    end
+
+    if key == 'up' or sc == 'w' or btn == "dpup" then
+        field:select(-1, field.selected.y - 1)
+    end
+    if key == 'down' or sc == 's' or btn == "dpdown" then
+        field:select(-1, field.selected.y + 1)
+    end
 end
 
 function love.update(dt)
