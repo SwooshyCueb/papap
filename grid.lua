@@ -18,32 +18,50 @@ function Grid:init(sz_x, sz_y)
     self:render()
 
 end
+
 function Grid:select(x, y)
     self.selected.x = x
     self.selected.y = y
-    self:render()
+    self:renderstg3()
 end
-function Grid:render()
+
+function Grid:renderstg1()
     love.graphics.setCanvas(self.basecanvas)
         love.graphics.clear()
         love.graphics.setBlendMode("alpha")
-        love.graphics.setColor(255, 255, 255, 255)
+        love.graphics.setLineWidth(1)
         for xpos = 0, self.sz.x-1 do
             for ypos = 0, self.sz.y-1 do
+                love.graphics.setColor(0, 0, 0, 130)
+                love.graphics.rectangle("fill", xpos*TILE_W, ypos*TILE_H, TILE_W, TILE_H)
+                love.graphics.setColor(255, 255, 255, 255)
                 love.graphics.rectangle("line", xpos*TILE_W, ypos*TILE_H, TILE_W, TILE_H)
             end
         end
     love.graphics.setCanvas()
+end
 
+function Grid:renderstg2()
+
+end
+
+function Grid:renderstg3()
     love.graphics.setCanvas(self.canvas)
         love.graphics.clear()
         love.graphics.setBlendMode("alpha")
         love.graphics.setColor(255, 255, 255, 255)
         love.graphics.draw(self.basecanvas)
+        love.graphics.setLineWidth(3)
         if (self.selected.x*self.selected.y) ~= 0 then
             love.graphics.setColor(184, 184, 0, 184)
             love.graphics.rectangle("line", (self.selected.x-1)*TILE_W, (self.selected.y-1)*TILE_H, TILE_W, TILE_H)
             love.graphics.setColor(255, 255, 255, 255)
         end
     love.graphics.setCanvas()
+end
+
+function Grid:render()
+    self:renderstg1()
+    self:renderstg2()
+    self:renderstg3()
 end
