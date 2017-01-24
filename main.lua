@@ -1,5 +1,6 @@
 require("common")
 require("grid")
+require("piece")
 if not pcall(function() bit = require('bit32') end) then
     bit = require('extern/numberlua')
 end
@@ -23,6 +24,14 @@ function love.load(arg)
     -- bgimg = love.graphics.newImage("assets/images/background_placeholder.jpg")
 
     love.keyboard.setKeyRepeat(false)
+
+    field:set(3, 3, Piece(bit.bor(PIECE_DEST, PIPE_DOWN)))
+    field:set(7, 5, Piece(bit.bor(PIECE_SRC, PIPE_LEFT)))
+    currg:set(1, 1, Piece(bit.bor(PIECE_PIPE, PIPE_VERTICAL)))
+    nextg:set(1, 1, Piece(bit.bor(PIECE_PIPE, PIPE_ANGLE_LEFTDOWN)))
+    nextg:set(2, 1, Piece(bit.bor(PIECE_PIPE, PIPE_CROSS)))
+    nextg:set(3, 1, Piece(bit.bor(PIECE_PIPE, PIPE_ANGLE_UPRIGHT)))
+    nextg:set(4, 1, Piece(bit.bor(PIECE_PIPE, PIPE_ANGLE_UPRIGHT)))
 end
 
 function love.keypressed(key, sc, rpt)
