@@ -11,6 +11,8 @@ function love.load(arg)
     field = Grid(8, 8)
     nextg = Grid(4, 1)
     currg = Grid(1, 1)
+
+    field:select(1, 1)
 end
 
 function love.update(dt)
