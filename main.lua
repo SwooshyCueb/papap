@@ -15,6 +15,7 @@ selchgcounter = 1.5
 -- bgimg = nil
 
 function love.load(arg)
+    love.graphics.setBlendMode("alpha")
     gen_piece_images()
 
     field = Grid(8, 8)
