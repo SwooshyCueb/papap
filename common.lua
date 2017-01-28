@@ -24,3 +24,16 @@ PIPE_ANGLE_LEFTUP    = 0x0292
 PIPE_ANGLE_LEFTDOWN  = 0x02A2
 PIPE_ANGLE_UPRIGHT   = 0x0252
 PIPE_ANGLE_DOWNRIGHT = 0x0262
+
+constraints = {
+    field_sz = {
+        x = {
+            min = 6,
+            max = 32 -- might increase this later
+        },
+        y = {
+            min = 4,
+            max = 32 -- might increase this later
+        }
+    }
+}
