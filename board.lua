@@ -27,9 +27,50 @@ function board:init(x, y)
 
     self.sz = {x = w, y = h}
 
-    -- Temporary
-    self.field:set(3, 3, Piece(bit.bor(PIECE_DEST, PIPE_DOWN)))
-    self.field:set(7, 5, Piece(bit.bor(PIECE_SRC, PIPE_LEFT)))
+    -- Choose location of pieces
+    repeat
+        -- Choose location of dest
+        dx = math.random(1, x)
+        dy = math.random(1, y)
+
+        -- Choose location of source
+        sx = math.random(1, x)
+        sy = math.random(1, y)
+
+        -- Make sure they're not too close
+    until ((sx - dx)^2 + (sy - dy)^2) > 2.5
+
+    -- Generate dest piece
+    dest = Piece(bit.bor(PIECE_DEST, PIPE_CROSS))
+    -- difficulty can be increased by reducing the number of entry points for the dest
+
+    -- Place dest piece
+    self.field:set(dx, dy, dest)
+
+    -- Choose direction of source
+    repeat
+        sdir = pdirections[math.random(1, table.getn(pdirections))]
+        -- difficulty can be increased by having more than one direction
+
+        -- ensure we're not going straight into a wall
+        i = true
+        if (sx == 1) and (bit.band(sdir, PIPE_LEFT) == PIPE_LEFT) then
+            i = false
+        elseif (sx == x) and (bit.band(sdir, PIPE_RIGHT) == PIPE_RIGHT) then
+            i = false
+        end
+        if (sy == 1) and (bit.band(sdir, PIPE_UP) == PIPE_UP) then
+            i = false
+        elseif (sy == x) and (bit.band(sdir, PIPE_DOWN) == PIPE_DOWN) then
+            i = false
+        end
+    until i
+
+    -- Generate source piece
+    src = Piece(bit.bor(PIECE_SRC, sdir))
+
+    -- Place source piece
+    self.field:set(sx, sy, src)
 
     -- Fill tray
     self.currg:set(1, 1, get_random_pipe())
