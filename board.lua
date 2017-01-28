@@ -30,11 +30,13 @@ function board:init(x, y)
     -- Temporary
     self.field:set(3, 3, Piece(bit.bor(PIECE_DEST, PIPE_DOWN)))
     self.field:set(7, 5, Piece(bit.bor(PIECE_SRC, PIPE_LEFT)))
-    self.currg:set(1, 1, Piece(bit.bor(PIECE_PIPE, PIPE_VERTICAL)))
-    self.nextg:set(1, 1, Piece(bit.bor(PIECE_PIPE, PIPE_ANGLE_LEFTDOWN)))
-    self.nextg:set(2, 1, Piece(bit.bor(PIECE_PIPE, PIPE_CROSS)))
-    self.nextg:set(3, 1, Piece(bit.bor(PIECE_PIPE, PIPE_ANGLE_UPRIGHT)))
-    self.nextg:set(4, 1, Piece(bit.bor(PIECE_PIPE, PIPE_ANGLE_UPRIGHT)))
+
+    -- Fill tray
+    self.currg:set(1, 1, get_random_pipe())
+    self.nextg:set(1, 1, get_random_pipe())
+    self.nextg:set(2, 1, get_random_pipe())
+    self.nextg:set(3, 1, get_random_pipe())
+    self.nextg:set(4, 1, get_random_pipe())
 
     self.canvas = love.graphics.newCanvas(w, h)
 

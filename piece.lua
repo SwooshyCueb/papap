@@ -2,9 +2,38 @@ require('common')
 require('extern/class')
 require('math')
 require('colors')
+require('math')
 if not pcall(function() bit =  require('bit32') end) then
     bit = require('extern/numberlua')
 end
+
+PIECE_NONE           = 0x0001
+PIECE_PIPE           = 0x0002
+PIECE_SPILL          = 0x0004
+
+PIECE_SRC            = 0x1002
+PIECE_DEST           = 0x2002
+
+PIPE_UP              = 0x0010
+PIPE_DOWN            = 0x0020
+PIPE_RIGHT           = 0x0040
+PIPE_LEFT            = 0x0080
+
+PIPE_STRAIGHT        = 0x0102
+PIPE_ANGLE           = 0x0202
+PIPE_X               = 0x0402
+
+PIPE_HORIZONTAL      = 0x01C2
+PIPE_VERTICAL        = 0x0132
+PIPE_CROSS           = 0x04F2
+PIPE_ANGLE_LEFTUP    = 0x0292
+PIPE_ANGLE_LEFTDOWN  = 0x02A2
+PIPE_ANGLE_UPRIGHT   = 0x0252
+PIPE_ANGLE_DOWNRIGHT = 0x0262
+
+pdirections = {PIPE_UP, PIPE_DOWN, PIPE_RIGHT, PIPE_LEFT}
+
+ptypes = {PIPE_HORIZONTAL, PIPE_VERTICAL, PIPE_CROSS, PIPE_ANGLE_LEFTUP, PIPE_ANGLE_LEFTDOWN, PIPE_ANGLE_UPRIGHT, PIPE_ANGLE_DOWNRIGHT}
 
 piece_images = {}
 
@@ -287,4 +316,8 @@ function gen_piece_images()
 
     love.graphics.setCanvas()
 
+end
+
+function get_random_pipe()
+    return Piece(ptypes[math.random(1, table.getn(ptypes))])
 end

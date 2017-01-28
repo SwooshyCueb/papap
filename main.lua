@@ -1,7 +1,8 @@
-require("common")
-require("grid")
-require("piece")
+require('common')
+require('grid')
+require('piece')
 require('board')
+require('math')
 if not pcall(function() bit = require('bit32') end) then
     bit = require('extern/numberlua')
 end
@@ -14,7 +15,8 @@ selchgcounter = 1.5
 -- bgimg = nil
 
 function love.load(arg)
-    love.graphics.setBlendMode("alpha")
+    math.randomseed(os.time())
+    love.graphics.setBlendMode('alpha')
     gen_piece_images()
 
     gb = board(16, 8)
