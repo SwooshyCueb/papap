@@ -4,6 +4,8 @@ require('piece')
 require('colors')
 require('extern/class')
 
+drip_interval = 0.25
+
 
 board = class()
 function board:init(x, y)
@@ -72,6 +74,8 @@ function board:init(x, y)
     -- Place source piece
     self.field:set(sx, sy, src)
 
+    self.sourceloc = {x = sx, y = sy}
+
     -- Fill tray
     self.currg:set(1, 1, get_random_pipe())
     self.nextg:set(1, 1, get_random_pipe())
@@ -80,6 +84,10 @@ function board:init(x, y)
     self.nextg:set(4, 1, get_random_pipe())
 
     self.canvas = love.graphics.newCanvas(w, h)
+
+    self.lastdrip = 0
+    --self.currdrips = {self.sourceloc}
+    self.currdrip = self.sourceloc
 
     self:render()
 end
@@ -113,7 +121,6 @@ function board:movsel(dir)
 
 end
 
-
 function board:play()
     sel = self.field.selected
 
@@ -131,5 +138,41 @@ function board:play()
     self.nextg:set(4, 1, get_random_pipe())
 
     self:render()
+
+end
+
+function board:drip()
+    ct = love.timer.getTime()
+    if ct - self.lastdrip < drip_interval then
+        return
+    end
+    self.lastdrip = ct
+
+    -- TODO: support split drips
+    -- TODO: handle running into walls
+
+    dr = self.field.map[self.currdrip.x][self.currdrip.y]:drip()
+
+    if dr == 0 then
+        -- this pipe isn't full yet
+        return
+    end
+
+    if bit.band(dr, DIR_UP) == DIR_UP and (self.currdrip.y ~= 1) then
+        self.currdrip.y = self.currdrip.y - 1
+        self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_DOWN)
+    elseif bit.band(dr, DIR_DOWN) == DIR_DOWN and (self.currdrip.y ~= self.field.sz.y) then
+        self.currdrip.y = self.currdrip.y + 1
+        self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_UP)
+    end
+
+    if bit.band(dr, DIR_LEFT) == DIR_LEFT and (self.currdrip.x ~= 1) then
+        self.currdrip.x = self.currdrip.x - 1
+        self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_RIGHT)
+    elseif bit.band(dr, DIR_RIGHT) == DIR_RIGHT and (self.currdrip.x ~= self.field.sz.x) then
+        self.currdrip.x = self.currdrip.x + 1
+        self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_LEFT)
+    end
+
 
 end

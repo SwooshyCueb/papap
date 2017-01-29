@@ -40,8 +40,10 @@ piece_images = {}
 Piece = class()
 function Piece:init(type)
     self.type = type
-    self.filled = 0
+    self.dryness_level = 16
     self.canvas = love.graphics.newCanvas(TILE_W, TILE_H)
+    self.flooddir = 0
+    self.fulldir = 0
     self:render()
 end
 
@@ -173,6 +175,19 @@ function Piece:render()
         end
 
     love.graphics.setCanvas()
+end
+
+function Piece:drip(direction)
+    direction = direction or false
+
+    if direction ~= false then
+        if (bit.band(self.type, PIECE_NONE) == PIECE_NONE) or (bit.band(self.type, direction) ~= direction) then
+            self.type = bit.bor(self.type, PIECE_SPILL)
+        end
+    end
+
+    self.flooddir = direction
+
 end
 
 function gen_piece_images()
@@ -321,3 +336,4 @@ end
 function get_random_pipe()
     return Piece(ptypes[math.random(1, table.getn(ptypes))])
 end
+
