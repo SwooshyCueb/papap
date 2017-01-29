@@ -3,6 +3,7 @@ require('grid')
 require('piece')
 require('board')
 require('math')
+require('input')
 if not pcall(function() bit = require('bit32') end) then
     bit = require('extern/numberlua')
 end
@@ -11,7 +12,6 @@ debug = true
 
 gb = nil
 
-selchgcounter = 1.5
 -- bgimg = nil
 
 bc = 0
@@ -45,10 +45,20 @@ end
 
 function love.keypressed(key, sc, rpt)
     btnpressed(key, sc, rpt, nil)
+    proc_input(key, sc, nil, true)
+end
+
+function love.keyreleased(key, sc)
+    proc_input(key, sc, nil, false)
 end
 
 function love.gamepadpressed(js, btn)
     btnpressed(nil, nil, nil, btn)
+    proc_input(nil, nil, btn, true)
+end
+
+function love.gamepadreleased(js, btn)
+    proc_input(nil, nil, btn, false)
 end
 
 function btnpressed(key, sc, rpt, btn)
