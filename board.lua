@@ -114,3 +114,22 @@ function board:movsel(dir)
 end
 
 
+function board:play()
+    sel = self.field.selected
+
+    -- Make sure there's not already a piece here
+    ovr = self.field:get(sel.x, sel.y)
+    if bit.band(ovr.type, PIECE_NONE) ~= PIECE_NONE then
+        return
+    end
+
+    self.field:set(sel.x, sel.y, self.currg:get(1, 1))
+    self.currg:set(1, 1, self.nextg:get(1, 1))
+    self.nextg:set(1, 1, self.nextg:get(2, 1))
+    self.nextg:set(2, 1, self.nextg:get(3, 1))
+    self.nextg:set(3, 1, self.nextg:get(4, 1))
+    self.nextg:set(4, 1, get_random_pipe())
+
+    self:render()
+
+end

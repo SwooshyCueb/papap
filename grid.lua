@@ -37,6 +37,10 @@ function Grid:set(x, y, piece)
     self:renderstg3()
 end
 
+function Grid:get(x, y)
+    return self.map[x-1][y-1]
+end
+
 function Grid:renderstg1()
     love.graphics.setCanvas(self.basecanvas)
         love.graphics.clear()

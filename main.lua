@@ -56,7 +56,7 @@ function btnpressed(key, sc, rpt, btn)
 
     -- TODO: Drop this input if directional button pressed
     if sc == 'return' or sc == 'e' or sc == 'space' or btn == 'a' then
-        -- Play current piece into selected slot
+        gb:play()
     end
 
     -- TODO: make this do stuff
