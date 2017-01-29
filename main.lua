@@ -41,17 +41,17 @@ end
 
 function btnpressed(key, sc, rpt, btn)
     if key == 'left' or sc == 'a' or btn == "dpleft" then
-        gb:select(gb.field.selected.x - 1, -1)
+        gb:movsel(DIR_LEFT)
     end
     if key == 'right' or sc == 'd' or btn == "dpright" then
-        gb:select(gb.field.selected.x + 1, -1)
+        gb:movsel(DIR_RIGHT)
     end
 
     if key == 'up' or sc == 'w' or btn == "dpup" then
-        gb:select(-1, gb.field.selected.y - 1)
+        gb:movsel(DIR_UP)
     end
     if key == 'down' or sc == 's' or btn == "dpdown" then
-        gb:select(-1, gb.field.selected.y + 1)
+        gb:movsel(DIR_DOWN)
     end
 
     -- TODO: Drop this input if directional button pressed
@@ -63,8 +63,6 @@ function btnpressed(key, sc, rpt, btn)
     if sc == 'escape' or btn == 'start' then
         -- Pause menu? Show controls? wat do
     end
-
-    print(love.timer.getTime())
 
 end
 

@@ -26,24 +26,8 @@ function Grid:init(sz_x, sz_y)
 end
 
 function Grid:select(x, y)
-    if x == -1 then
-    elseif x > self.sz.x then
-        self.selected.x = self.sz.x
-    elseif x < 1 then
-        self.selected.x = 1
-    else
-        self.selected.x = x
-    end
-
-    if y == -1 then
-    elseif y > self.sz.y then
-        self.selected.y = self.sz.y
-    elseif y < 1 then
-        self.selected.y = 1
-    else
-        self.selected.y = y
-    end
-
+    self.selected.x = x
+    self.selected.y = y
     self:renderstg3()
 end
 

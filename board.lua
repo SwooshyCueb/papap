@@ -92,9 +92,25 @@ function board:render()
     love.graphics.setCanvas()
 end
 
--- TODO: replace this with relative cursor movement
-function board:select(x, y)
-    self.field:select(x, y)
+function board:movsel(dir)
+    sel = self.field.selected
+
+    if bit.band(dir, DIR_UP) == DIR_UP and (sel.y ~= 1) then
+        sel.y = sel.y - 1
+    elseif bit.band(dir, DIR_DOWN) == DIR_DOWN and (sel.y ~= self.field.sz.y) then
+        sel.y = sel.y + 1
+    end
+
+    if bit.band(dir, DIR_LEFT) == DIR_LEFT and (sel.x ~= 1) then
+        sel.x = sel.x - 1
+    elseif bit.band(dir, DIR_RIGHT) == DIR_RIGHT and (sel.x ~= self.field.sz.x) then
+        sel.x = sel.x + 1
+    end
+
+    self.field:select(sel.x, sel.y)
+
     self:render()
+
 end
+
 
