@@ -13,7 +13,14 @@ gb = nil
 
 selchgcounter = 1.5
 -- bgimg = nil
+
 bc = 0
+flood = 30
+currtimer = 30
+stdfont = nil
+monofont = nil
+
+tt = nil
 
 function love.load(arg)
     math.randomseed(os.time())
@@ -28,6 +35,9 @@ function love.load(arg)
     -- bgimg = love.graphics.newImage('assets/images/background_placeholder.jpg')
 
     love.keyboard.setKeyRepeat(false)
+
+    stdfont = love.graphics.newFont('assets/fonts/NovaSquare.ttf', 18)
+    monofont = love.graphics.newFont('assets/fonts/NovaMono.ttf', 18)
 
 
     bc = love.timer.getTime()
@@ -69,12 +79,14 @@ function btnpressed(key, sc, rpt, btn)
 end
 
 function love.update(dt)
-
+    currtimer = (bc + 30) - love.timer.getTime()
+    tt = love.graphics.newText(monofont, string.format('%05.2f', currtimer))
 end
 
 function love.draw(dt)
     -- love.graphics.draw(bgimg, 0, 0)
 
     love.graphics.draw(gb.canvas)
+    love.graphics.draw(tt, 8, gb.sz.y + 8)
 
 end

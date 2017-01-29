@@ -1,5 +1,5 @@
-TILE_H = 64
-TILE_W = 64
+TILE_H = 48
+TILE_W = 48
 
 constraints = {
     field_sz = {
