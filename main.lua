@@ -27,6 +27,8 @@ function love.load(arg)
     love.graphics.setBlendMode('alpha')
     gen_piece_images()
 
+    love.window.setIcon(piece_images[PIECE_SRC]:newImageData())
+
     gb = board(16, 8)
 
     -- For some reason this breaks things.
