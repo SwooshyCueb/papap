@@ -13,6 +13,7 @@ gb = nil
 
 selchgcounter = 1.5
 -- bgimg = nil
+bc = 0
 
 function love.load(arg)
     math.randomseed(os.time())
@@ -24,11 +25,12 @@ function love.load(arg)
     -- For some reason this breaks things.
     -- love.window.setMode(gb.sz.x, gb.sz.y)
 
-    -- bgimg = love.graphics.newImage("assets/images/background_placeholder.jpg")
+    -- bgimg = love.graphics.newImage('assets/images/background_placeholder.jpg')
 
     love.keyboard.setKeyRepeat(false)
 
 
+    bc = love.timer.getTime()
 end
 
 function love.keypressed(key, sc, rpt)
@@ -40,17 +42,17 @@ function love.gamepadpressed(js, btn)
 end
 
 function btnpressed(key, sc, rpt, btn)
-    if key == 'left' or sc == 'a' or btn == "dpleft" then
+    if key == 'left' or sc == 'a' or btn == 'dpleft' then
         gb:movsel(DIR_LEFT)
     end
-    if key == 'right' or sc == 'd' or btn == "dpright" then
+    if key == 'right' or sc == 'd' or btn == 'dpright' then
         gb:movsel(DIR_RIGHT)
     end
 
-    if key == 'up' or sc == 'w' or btn == "dpup" then
+    if key == 'up' or sc == 'w' or btn == 'dpup' then
         gb:movsel(DIR_UP)
     end
-    if key == 'down' or sc == 's' or btn == "dpdown" then
+    if key == 'down' or sc == 's' or btn == 'dpdown' then
         gb:movsel(DIR_DOWN)
     end
 

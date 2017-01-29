@@ -48,9 +48,9 @@ function Grid:renderstg1()
         for xpos = 0, self.sz.x-1 do
             for ypos = 0, self.sz.y-1 do
                 love.graphics.setColor(colors.grid_bg)
-                    love.graphics.rectangle("fill", xpos*TILE_W, ypos*TILE_H, TILE_W, TILE_H)
+                    love.graphics.rectangle('fill', xpos*TILE_W, ypos*TILE_H, TILE_W, TILE_H)
                 love.graphics.setColor(colors.gridlines)
-                    love.graphics.rectangle("line", xpos*TILE_W, ypos*TILE_H, TILE_W, TILE_H)
+                    love.graphics.rectangle('line', xpos*TILE_W, ypos*TILE_H, TILE_W, TILE_H)
                 love.graphics.setColor(colors.default)
             end
         end
@@ -76,7 +76,7 @@ function Grid:renderstg3()
         love.graphics.setLineWidth(3)
         if (self.selected.x*self.selected.y) ~= 0 then
             love.graphics.setColor(colors.grid_sel)
-                love.graphics.rectangle("line", (self.selected.x-1)*TILE_W, (self.selected.y-1)*TILE_H, TILE_W, TILE_H)
+                love.graphics.rectangle('line', (self.selected.x-1)*TILE_W, (self.selected.y-1)*TILE_H, TILE_W, TILE_H)
             love.graphics.setColor(colors.default)
         end
     love.graphics.setCanvas()
