@@ -3,7 +3,8 @@ if not pcall(function() bit = require('bit32') end) then
 end
 
 cfg = {
-    repeat_delay = 0.75,
+    repeat_interval = 0.75,
+    repeat_delay = 1.5
 }
 
 direction_input = {

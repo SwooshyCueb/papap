@@ -43,7 +43,7 @@ function board:init(x, y)
     until ((sx - dx)^2 + (sy - dy)^2) > 2.5
 
     -- Generate dest piece
-    dest = Piece(bit.bor(PIECE_DEST, PIPE_CROSS))
+    dest = Piece(bit.bor(PIPE_DEST, PIPE_CROSS))
     -- difficulty can be increased by reducing the number of entry points for the dest
 
     -- Place dest piece
@@ -56,20 +56,20 @@ function board:init(x, y)
 
         -- ensure we're not going straight into a wall
         i = true
-        if (sx == 1) and (bit.band(sdir, PIPE_LEFT) == PIPE_LEFT) then
+        if (sx == 1) and (bit.band(sdir, PIPE_LEFT) ~= 0) then
             i = false
-        elseif (sx == x) and (bit.band(sdir, PIPE_RIGHT) == PIPE_RIGHT) then
+        elseif (sx == x) and (bit.band(sdir, PIPE_RIGHT) ~= 0) then
             i = false
         end
-        if (sy == 1) and (bit.band(sdir, PIPE_UP) == PIPE_UP) then
+        if (sy == 1) and (bit.band(sdir, PIPE_UP) ~= 0) then
             i = false
-        elseif (sy == x) and (bit.band(sdir, PIPE_DOWN) == PIPE_DOWN) then
+        elseif (sy == x) and (bit.band(sdir, PIPE_DOWN) ~= 0) then
             i = false
         end
     until i
 
     -- Generate source piece
-    src = Piece(bit.bor(PIECE_SRC, sdir))
+    src = Piece(bit.bor(PIPE_SRC, sdir))
 
     -- Place source piece
     self.field:set(sx, sy, src)
@@ -103,15 +103,15 @@ end
 function board:movsel(dir)
     sel = self.field.selected
 
-    if bit.band(dir, DIR_UP) == DIR_UP and (sel.y ~= 1) then
+    if bit.band(dir, DIR_UP) ~= 0 and (sel.y ~= 1) then
         sel.y = sel.y - 1
-    elseif bit.band(dir, DIR_DOWN) == DIR_DOWN and (sel.y ~= self.field.sz.y) then
+    elseif bit.band(dir, DIR_DOWN) ~= 0 and (sel.y ~= self.field.sz.y) then
         sel.y = sel.y + 1
     end
 
-    if bit.band(dir, DIR_LEFT) == DIR_LEFT and (sel.x ~= 1) then
+    if bit.band(dir, DIR_LEFT) ~= 0 and (sel.x ~= 1) then
         sel.x = sel.x - 1
-    elseif bit.band(dir, DIR_RIGHT) == DIR_RIGHT and (sel.x ~= self.field.sz.x) then
+    elseif bit.band(dir, DIR_RIGHT) ~= 0 and (sel.x ~= self.field.sz.x) then
         sel.x = sel.x + 1
     end
 
@@ -126,7 +126,7 @@ function board:play()
 
     -- Make sure there's not already a piece here
     ovr = self.field:get(sel.x, sel.y)
-    if bit.band(ovr.type, PIECE_NONE) ~= PIECE_NONE then
+    if bit.band(ovr.type, PIECE_NONE) == 0 or bit.band(ovr.type, PIECE_SPILL) ~= 0 then
         return
     end
 
@@ -158,18 +158,18 @@ function board:drip()
         return
     end
 
-    if bit.band(dr, DIR_UP) == DIR_UP and (self.currdrip.y ~= 1) then
+    if bit.band(dr, DIR_UP) ~= 0 and (self.currdrip.y ~= 1) then
         self.currdrip.y = self.currdrip.y - 1
         self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_DOWN)
-    elseif bit.band(dr, DIR_DOWN) == DIR_DOWN and (self.currdrip.y ~= self.field.sz.y) then
+    elseif bit.band(dr, DIR_DOWN) ~= 0 and (self.currdrip.y ~= self.field.sz.y) then
         self.currdrip.y = self.currdrip.y + 1
         self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_UP)
     end
 
-    if bit.band(dr, DIR_LEFT) == DIR_LEFT and (self.currdrip.x ~= 1) then
+    if bit.band(dr, DIR_LEFT) ~= 0 and (self.currdrip.x ~= 1) then
         self.currdrip.x = self.currdrip.x - 1
         self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_RIGHT)
-    elseif bit.band(dr, DIR_RIGHT) == DIR_RIGHT and (self.currdrip.x ~= self.field.sz.x) then
+    elseif bit.band(dr, DIR_RIGHT) ~= 0 and (self.currdrip.x ~= self.field.sz.x) then
         self.currdrip.x = self.currdrip.x + 1
         self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_LEFT)
     end

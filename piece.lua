@@ -11,17 +11,20 @@ PIECE_NONE           = 0x0001
 PIECE_PIPE           = 0x0002
 PIECE_SPILL          = 0x0004
 
-PIECE_SRC            = 0x1002
-PIECE_DEST           = 0x2002
+PIECE_SRC            = 0x1000
+PIECE_DEST           = 0x2000
+
+PIPE_SRC             = 0x1002
+PIPE_DEST            = 0x2002
 
 PIPE_UP              = 0x0010
 PIPE_DOWN            = 0x0020
 PIPE_RIGHT           = 0x0040
 PIPE_LEFT            = 0x0080
 
-PIPE_STRAIGHT        = 0x0102
-PIPE_ANGLE           = 0x0202
-PIPE_X               = 0x0402
+PIPE_STRAIGHT        = 0x0100
+PIPE_ANGLE           = 0x0200
+PIPE_X               = 0x0400
 
 PIPE_HORIZONTAL      = 0x01C2
 PIPE_VERTICAL        = 0x0132
@@ -40,8 +43,18 @@ piece_images = {}
 Piece = class()
 function Piece:init(type)
     self.type = type
-    self.dryness_level = 16
     self.canvas = love.graphics.newCanvas(TILE_W, TILE_H)
+    self.flow = {
+        flowing = {
+            dir_in = 0,
+            dir_out = 0
+        },
+        full = {
+            dir_in = 0,
+            dir_out = 0
+        },
+        counter = 16
+    }
     self.flooddir = 0
     self.fulldir = 0
     self:render()
@@ -50,20 +63,25 @@ end
 function Piece:render()
     love.graphics.setCanvas(self.canvas)
         love.graphics.clear()
-        if bit.band(self.type, PIECE_NONE) == PIECE_NONE then
+        if bit.band(self.type, bit.bor(PIECE_NONE, PIECE_SPILL)) == PIECE_NONE then
             love.graphics.setCanvas()
             return
         end
 
         love.graphics.clear()
         love.graphics.setLineWidth(2)
-        love.graphics.setColor(colors.tile_bg)
-            love.graphics.rectangle('fill', 0, 0, TILE_W, TILE_H)
-        love.graphics.setColor(colors.tile_border)
-            love.graphics.rectangle('line', 0, 0, TILE_W, TILE_H)
-        love.graphics.setColor(colors.default)
 
-        if bit.band(self.type, PIECE_DEST) == PIECE_DEST then
+
+        -- Draw piece background
+        if bit.band(self.type, PIECE_NONE) == 0 then
+            love.graphics.setColor(colors.tile_bg)
+                love.graphics.rectangle('fill', 0, 0, TILE_W, TILE_H)
+            love.graphics.setColor(colors.tile_border)
+                love.graphics.rectangle('line', 0, 0, TILE_W, TILE_H)
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(self.type, PIECE_DEST) ~= 0 then
             love.graphics.draw(piece_images[PIECE_DEST])
 
             if bit.band(self.type, PIPE_DOWN) ~= 0 then
@@ -105,7 +123,7 @@ function Piece:render()
                     love.graphics.line(TILE_W*3/4, TILE_H*9/16, TILE_W, TILE_H*9/16)
                 love.graphics.setColor(colors.default)
             end
-        elseif bit.band(self.type, PIECE_PIPE) == PIECE_PIPE then
+        elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
             if bit.band(self.type, PIPE_DOWN) ~= 0 then
                 love.graphics.setColor(colors.pipe_inside)
                     love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*1/8, TILE_H*9/16)
@@ -170,7 +188,7 @@ function Piece:render()
 
         end
 
-        if bit.band(self.type, PIECE_SRC) == PIECE_SRC then
+        if bit.band(self.type, PIECE_SRC) ~= 0 then
             love.graphics.draw(piece_images[PIECE_SRC])
         end
 
@@ -181,12 +199,34 @@ function Piece:drip(direction)
     direction = direction or false
 
     if direction ~= false then
-        if (bit.band(self.type, PIECE_NONE) == PIECE_NONE) or (bit.band(self.type, direction) ~= direction) then
+
+        if (bit.band(self.type, PIECE_NONE) ~= 0) then
+            -- Create spill if piece is empty
+            self.type = bit.bor(self.type, PIECE_SPILL)
+        elseif (bit.band(self.type, PIECE_SRC) ~= 0) then
+            -- Create spill if piece is source
+            self.type = bit.bor(self.type, PIECE_SPILL)
+        elseif (bit.band(self.type, direction) == 0) then
+            -- Create spill if no pipe to receive flow
             self.type = bit.bor(self.type, PIECE_SPILL)
         end
-    end
 
-    self.flooddir = direction
+        self.flow.flowing.dir_in = direction
+        if (bit.band(self.type, PIECE_DEST) == 0) then
+            if (bit.band(self.type, PIPE_X) == 0) then
+                self.flow.flowing.dir_out = bit.band(bit.band(DIRMASK, bit.bnot(direction)), self.type)
+            elseif direction == DIR_UP then
+                self.flow.flowing.dir_out = DIR_DOWN
+            elseif direction == DIR_DOWN then
+                self.flow.flowing.dir_out = DIR_UP
+            elseif direction == DIR_LEFT then
+                self.flow.flowing.dir_out = DIR_RIGHT
+            elseif direction == DIR_RIGHT then
+                self.flow.flowing.dir_out = DIR_LEFT
+            end
+        end
+
+    end
 
 end
 
