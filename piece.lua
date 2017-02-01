@@ -228,6 +228,8 @@ function Piece:drip(direction)
 
     end
 
+    return 0
+
 end
 
 function gen_piece_images()
