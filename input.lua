@@ -84,7 +84,7 @@ function proc_input(key, sc, btn, press)
         input_state.down = stateval(input_state.down, direction_input.dpad, press)
 
     elseif sc == 'return' then
-        input_state.a = stateval(input_state.a, a_input.emter, press)
+        input_state.a = stateval(input_state.a, a_input.enter, press)
     elseif sc == 'e' then
         input_state.a = stateval(input_state.a, a_input.wasd, press)
     elseif sc == 'space' then
