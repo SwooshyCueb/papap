@@ -153,27 +153,27 @@ function board:drip(dt)
 
     for i = 1, table.getn(self.currdrips) do
 
-        dr = self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip()
+        dr = self.field:drip(self.currdrips[i].x, self.currdrips[i].y)
 
         if dr == 0 then
             -- this pipe isn't full yet
             return
         end
 
-        if bit.band(dr, DIR_UP) ~= 0 and (self.currdrip.y ~= 1) then
+        if bit.band(dr, DIR_UP) ~= 0 and (self.currdrips[i].y ~= 1) then
             self.currdrips[i].y = self.currdrips[i].y - 1
-            self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip(DIR_DOWN)
+            self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_DOWN)
         elseif bit.band(dr, DIR_DOWN) ~= 0 and (self.currdrips[i].y ~= self.field.sz.y) then
             self.currdrips[i].y = self.currdrips[i].y + 1
-            self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip(DIR_UP)
+            self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_UP)
         end
 
         if bit.band(dr, DIR_LEFT) ~= 0 and (self.currdrips[i].x ~= 1) then
             self.currdrips[i].x = self.currdrips[i].x - 1
-            self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip(DIR_RIGHT)
+            self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_RIGHT)
         elseif bit.band(dr, DIR_RIGHT) ~= 0 and (self.currdripd[i].x ~= self.field.sz.x) then
             self.currdrips[i].x = self.currdrips[i].x + 1
-            self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip(DIR_LEFT)
+            self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_LEFT)
         end
 
     end
