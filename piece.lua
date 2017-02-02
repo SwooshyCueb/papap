@@ -81,89 +81,105 @@ function Piece:render()
             love.graphics.setColor(colors.default)
         end
 
+        -- Draw "drain"
         if bit.band(self.type, PIECE_DEST) ~= 0 then
             love.graphics.draw(piece_images[PIECE_DEST])
+        end
 
-            if bit.band(self.type, PIPE_DOWN) ~= 0 then
-                love.graphics.setColor(colors.pipe_inside)
+        -- Draw pipes (pt 1)
+        if bit.band(self.type, PIPE_DOWN) ~= 0 then
+            love.graphics.setColor(colors.pipe_inside)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
                     love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*3/4, TILE_W*1/8, TILE_H*1/4)
-                love.graphics.setColor(colors.pipe_outside)
-                    love.graphics.setLineWidth(2)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*1/8, TILE_H*9/16)
+                end
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(self.type, PIPE_UP) ~= 0 then
+            love.graphics.setColor(colors.pipe_inside)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*1/4)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*9/16)
+                end
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(self.type, PIPE_LEFT) ~= 0 then
+            love.graphics.setColor(colors.pipe_inside)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
+                end
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(self.type, PIPE_RIGHT) ~= 0 then
+            love.graphics.setColor(colors.pipe_inside)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*3/4, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
+                end
+            love.graphics.setColor(colors.default)
+        end
+
+        -- Draw water
+
+        -- Draw pipes (pt 2)
+        love.graphics.setLineWidth(2)
+        if bit.band(self.type, PIPE_DOWN) ~= 0 then
+            love.graphics.setColor(colors.pipe_outside)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
                     love.graphics.line(TILE_W*7/16, TILE_H*3/4, TILE_W*7/16, TILE_H)
                     love.graphics.line(TILE_W*9/16, TILE_H*3/4, TILE_W*9/16, TILE_H)
-                love.graphics.setColor(colors.default)
-            end
-
-            if bit.band(self.type, PIPE_UP) ~= 0 then
-                love.graphics.setColor(colors.pipe_inside)
-                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*1/4)
-                love.graphics.setColor(colors.pipe_outside)
-                    love.graphics.setLineWidth(2)
-                    love.graphics.line(TILE_W*7/16, 0, TILE_W*7/16, TILE_H*1/4)
-                    love.graphics.line(TILE_W*9/16, 0, TILE_W*9/16, TILE_H*1/4)
-                love.graphics.setColor(colors.default)
-            end
-
-            if bit.band(self.type, PIPE_LEFT) ~= 0 then
-                love.graphics.setColor(colors.pipe_inside)
-                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
-                love.graphics.setColor(colors.pipe_outside)
-                    love.graphics.setLineWidth(2)
-                    love.graphics.line(0, TILE_H*7/16, TILE_W*1/4, TILE_H*7/16)
-                    love.graphics.line(0, TILE_H*9/16, TILE_W*1/4, TILE_H*9/16)
-                love.graphics.setColor(colors.default)
-            end
-
-            if bit.band(self.type, PIPE_RIGHT) ~= 0 then
-                love.graphics.setColor(colors.pipe_inside)
-                    love.graphics.rectangle('fill', TILE_W*3/4, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
-                love.graphics.setColor(colors.pipe_outside)
-                    love.graphics.setLineWidth(2)
-                    love.graphics.line(TILE_W*3/4, TILE_H*7/16, TILE_W, TILE_H*7/16)
-                    love.graphics.line(TILE_W*3/4, TILE_H*9/16, TILE_W, TILE_H*9/16)
-                love.graphics.setColor(colors.default)
-            end
-        elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
-            if bit.band(self.type, PIPE_DOWN) ~= 0 then
-                love.graphics.setColor(colors.pipe_inside)
-                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*1/8, TILE_H*9/16)
-                love.graphics.setColor(colors.pipe_outside)
-                    love.graphics.setLineWidth(2)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
                     love.graphics.line(TILE_W*7/16, TILE_H*9/16, TILE_W*7/16, TILE_H)
                     love.graphics.line(TILE_W*9/16, TILE_H*9/16, TILE_W*9/16, TILE_H)
-                love.graphics.setColor(colors.default)
-            end
+                end
+            love.graphics.setColor(colors.default)
+        end
 
-            if bit.band(self.type, PIPE_UP) ~= 0 then
-                love.graphics.setColor(colors.pipe_inside)
-                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*9/16)
-                love.graphics.setColor(colors.pipe_outside)
-                    love.graphics.setLineWidth(2)
+        if bit.band(self.type, PIPE_UP) ~= 0 then
+            love.graphics.setColor(colors.pipe_outside)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.line(TILE_W*7/16, 0, TILE_W*7/16, TILE_H*1/4)
+                    love.graphics.line(TILE_W*9/16, 0, TILE_W*9/16, TILE_H*1/4)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
                     love.graphics.line(TILE_W*7/16, 0, TILE_W*7/16, TILE_H*7/16)
                     love.graphics.line(TILE_W*9/16, 0, TILE_W*9/16, TILE_H*7/16)
-                love.graphics.setColor(colors.default)
-            end
+                end
+            love.graphics.setColor(colors.default)
+        end
 
-            if bit.band(self.type, PIPE_LEFT) ~= 0 then
-                love.graphics.setColor(colors.pipe_inside)
-                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
-                love.graphics.setColor(colors.pipe_outside)
-                    love.graphics.setLineWidth(2)
+        if bit.band(self.type, PIPE_LEFT) ~= 0 then
+            love.graphics.setColor(colors.pipe_outside)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.line(0, TILE_H*7/16, TILE_W*1/4, TILE_H*7/16)
+                    love.graphics.line(0, TILE_H*9/16, TILE_W*1/4, TILE_H*9/16)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
                     love.graphics.line(0, TILE_H*7/16, TILE_W*7/16, TILE_H*7/16)
                     love.graphics.line(0, TILE_H*9/16, TILE_W*7/16, TILE_H*9/16)
-                love.graphics.setColor(colors.default)
-            end
+                end
+            love.graphics.setColor(colors.default)
+        end
 
-            if bit.band(self.type, PIPE_RIGHT) ~= 0 then
-                love.graphics.setColor(colors.pipe_inside)
-                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
-                love.graphics.setColor(colors.pipe_outside)
-                    love.graphics.setLineWidth(2)
+        if bit.band(self.type, PIPE_RIGHT) ~= 0 then
+            love.graphics.setColor(colors.pipe_outside)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.line(TILE_W*3/4, TILE_H*7/16, TILE_W, TILE_H*7/16)
+                    love.graphics.line(TILE_W*3/4, TILE_H*9/16, TILE_W, TILE_H*9/16)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
                     love.graphics.line(TILE_W*9/16, TILE_H*7/16, TILE_W, TILE_H*7/16)
                     love.graphics.line(TILE_W*9/16, TILE_H*9/16, TILE_W, TILE_H*9/16)
-                love.graphics.setColor(colors.default)
-            end
+                end
+            love.graphics.setColor(colors.default)
+        end
 
+        if bit.band(self.type, PIECE_PIPE) ~= 0 then
             if bit.band(self.type, bit.bor(PIPE_DOWN, PIPE_UP)) ~= 0 then
                 love.graphics.setColor(colors.pipe_outside)
                     if bit.band(self.type, PIPE_LEFT) == 0 then
@@ -188,6 +204,7 @@ function Piece:render()
 
         end
 
+        -- Draw "faucet"
         if bit.band(self.type, PIECE_SRC) ~= 0 then
             love.graphics.draw(piece_images[PIECE_SRC])
         end
