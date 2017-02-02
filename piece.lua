@@ -213,6 +213,7 @@ function Piece:render()
 end
 
 function Piece:drip(direction)
+
     direction = direction or false
 
     if direction ~= false then

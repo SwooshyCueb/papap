@@ -86,8 +86,8 @@ function board:init(x, y)
     self.canvas = love.graphics.newCanvas(w, h)
 
     self.lastdrip = 0
-    --self.currdrips = {self.sourceloc}
-    self.currdrip = self.sourceloc
+    self.currdrips = {self.sourceloc}
+    --self.currdrip = self.sourceloc
 
     self:render()
 end
@@ -141,37 +141,41 @@ function board:play()
 
 end
 
-function board:drip()
-    ct = love.timer.getTime()
-    if ct - self.lastdrip < drip_interval then
+function board:drip(dt)
+    self.lastdrip = self.lastdrip + dt
+    if self.lastdrip < drip_interval then
         return
     end
-    self.lastdrip = ct
+    self.lastdrip = 0
 
     -- TODO: support split drips
     -- TODO: handle running into walls
 
-    dr = self.field.map[self.currdrip.x][self.currdrip.y]:drip()
+    for i = 1, table.getn(self.currdrips) do
 
-    if dr == 0 then
-        -- this pipe isn't full yet
-        return
-    end
+        dr = self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip()
 
-    if bit.band(dr, DIR_UP) ~= 0 and (self.currdrip.y ~= 1) then
-        self.currdrip.y = self.currdrip.y - 1
-        self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_DOWN)
-    elseif bit.band(dr, DIR_DOWN) ~= 0 and (self.currdrip.y ~= self.field.sz.y) then
-        self.currdrip.y = self.currdrip.y + 1
-        self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_UP)
-    end
+        if dr == 0 then
+            -- this pipe isn't full yet
+            return
+        end
 
-    if bit.band(dr, DIR_LEFT) ~= 0 and (self.currdrip.x ~= 1) then
-        self.currdrip.x = self.currdrip.x - 1
-        self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_RIGHT)
-    elseif bit.band(dr, DIR_RIGHT) ~= 0 and (self.currdrip.x ~= self.field.sz.x) then
-        self.currdrip.x = self.currdrip.x + 1
-        self.field.map[self.currdrip.x][self.currdrip.y]:drip(DIR_LEFT)
+        if bit.band(dr, DIR_UP) ~= 0 and (self.currdrip.y ~= 1) then
+            self.currdrips[i].y = self.currdrips[i].y - 1
+            self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip(DIR_DOWN)
+        elseif bit.band(dr, DIR_DOWN) ~= 0 and (self.currdrips[i].y ~= self.field.sz.y) then
+            self.currdrips[i].y = self.currdrips[i].y + 1
+            self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip(DIR_UP)
+        end
+
+        if bit.band(dr, DIR_LEFT) ~= 0 and (self.currdrips[i].x ~= 1) then
+            self.currdrips[i].x = self.currdrips[i].x - 1
+            self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip(DIR_RIGHT)
+        elseif bit.band(dr, DIR_RIGHT) ~= 0 and (self.currdripd[i].x ~= self.field.sz.x) then
+            self.currdrips[i].x = self.currdrips[i].x + 1
+            self.field.map[self.currdrips[i].x][self.currdrips[i].y]:drip(DIR_LEFT)
+        end
+
     end
 
 

@@ -43,6 +43,7 @@ function love.load(arg)
 
 
     bc = love.timer.getTime()
+    tt = love.graphics.newText(monofont, nil)
 end
 
 function love.keypressed(key, sc, rpt)
@@ -91,8 +92,13 @@ function btnpressed(key, sc, rpt, btn)
 end
 
 function love.update(dt)
-    currtimer = (bc + 30) - love.timer.getTime()
-    tt = love.graphics.newText(monofont, string.format('%05.2f', currtimer))
+    currtimer = (bc + 10) - love.timer.getTime()
+    if currtimer > 0 then
+        tt:set(string.format('%05.2f', currtimer))
+    else
+        tt:set(string.format('%05.2f', 0.0))
+        gb:drip(dt)
+    end
 end
 
 function love.draw(dt)
