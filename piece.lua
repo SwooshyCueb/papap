@@ -244,9 +244,17 @@ function Piece:drip(direction)
             end
         end
 
-    end
+        return 0
+
+    elseif self.flow.counter == 0 then
+        self.flow.counter = 16
+
+        -- return direction
+    else
+        self.flow.counter = self.flow.counter - 1
 
     return 0
+    end
 
 end
 
