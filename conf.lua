@@ -1,10 +1,10 @@
 -- Configuration
 function love.conf(game)
-    game.title = 'GAME_NAME_PRETTY'
-    game.identity = 'GAME_NAME_IDSTR'
+    game.title = 'pipes and pipes and pipes'
+    game.identity = 'papap'
     game.version = '0.10.2'
     -- game.window.width = 528
-    game.window.width = 1600
+    game.window.width = 1000
     -- game.window.height = 600
     game.window.height = 700
     game.window.resizable = false
