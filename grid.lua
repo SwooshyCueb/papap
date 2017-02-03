@@ -38,7 +38,7 @@ function Grid:set(x, y, piece)
 end
 
 function Grid:drip(x, y, dir)
-    return self.map[x][y]:drip(dir)
+    return self.map[x-1][y-1]:drip(dir)
 end
 
 function Grid:get(x, y)
