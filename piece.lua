@@ -36,7 +36,9 @@ PIPE_ANGLE_DOWNRIGHT = 0x0262
 
 pdirections = {PIPE_UP, PIPE_DOWN, PIPE_RIGHT, PIPE_LEFT}
 
-ptypes = {PIPE_HORIZONTAL, PIPE_VERTICAL, PIPE_CROSS, PIPE_ANGLE_LEFTUP, PIPE_ANGLE_LEFTDOWN, PIPE_ANGLE_UPRIGHT, PIPE_ANGLE_DOWNRIGHT}
+-- Cross pieces temporarily out of rotation
+ptypes = {PIPE_HORIZONTAL, PIPE_VERTICAL, --PIPE_CROSS,
+PIPE_ANGLE_LEFTUP, PIPE_ANGLE_LEFTDOWN, PIPE_ANGLE_UPRIGHT, PIPE_ANGLE_DOWNRIGHT}
 
 piece_images = {}
 
@@ -57,6 +59,11 @@ function Piece:init(type)
     }
     self.flooddir = 0
     self.fulldir = 0
+
+    if bit.band(self.type, PIECE_SRC) ~= 0 then
+        self.flow.flowing.dir_out = bit.band(self.type, DIRMASK)
+    end
+
     self:render()
 end
 
@@ -249,7 +256,13 @@ function Piece:drip(direction)
     elseif self.flow.counter == 0 then
         self.flow.counter = 16
 
-        -- return direction
+        self.flow.full.dir_out = self.flow.flowing.dir_out
+        self.flow.flowing.dir_out = 0
+
+        self.flow.full.dir_in = self.flow.flowing.dir_in
+        self.flow.flowing.dir_in = 0
+
+        return self.flow.full.dir_out
     else
         self.flow.counter = self.flow.counter - 1
 

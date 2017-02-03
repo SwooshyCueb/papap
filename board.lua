@@ -154,6 +154,7 @@ function board:drip(dt)
     for i = 1, table.getn(self.currdrips) do
 
         dr = self.field:drip(self.currdrips[i].x, self.currdrips[i].y)
+        print(dr)
 
         if dr == 0 then
             -- this pipe isn't full yet
@@ -171,12 +172,11 @@ function board:drip(dt)
         if bit.band(dr, DIR_LEFT) ~= 0 and (self.currdrips[i].x ~= 1) then
             self.currdrips[i].x = self.currdrips[i].x - 1
             self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_RIGHT)
-        elseif bit.band(dr, DIR_RIGHT) ~= 0 and (self.currdripd[i].x ~= self.field.sz.x) then
+        elseif bit.band(dr, DIR_RIGHT) ~= 0 and (self.currdrips[i].x ~= self.field.sz.x) then
             self.currdrips[i].x = self.currdrips[i].x + 1
             self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_LEFT)
         end
 
     end
-
 
 end
