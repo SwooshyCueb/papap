@@ -43,6 +43,11 @@ function menu:renderstart()
 	self.btns = {}
 	self.titles = {}
 	
+	gametitle = love.graphics.newCanvas(200, 50)
+	love.graphics.setCanvas(gametitle)
+	self.titles[0] = {gametitle, 300, 100, "Pipes and Pipes and Pipes...", 210, 110, 30}
+	love.graphics.setCanvas()
+	
 	startbtn = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(startbtn)
 	love.graphics.setColor(150, 0, 175)
@@ -65,6 +70,11 @@ function menu:renderpause()
 	self.select = 0
 	self.btns = {}
 	self.titles = {}
+	
+	pausetitle = love.graphics.newCanvas(200, 50)
+	love.graphics.setCanvas(pausetitle)
+	self.titles[0] = {pausetitle, 300, 100, "Pause", 355, 110, 30}
+	love.graphics.setCanvas()
 	
 	resumebtn = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(resumebtn)
@@ -95,9 +105,6 @@ function menu:rendergameover()
 	self.btns = {}
 	self.titles = {}
 	
-	sfx = love.audio.newSource("assets/sound/fail.mp3", "stream")
-	love.audio.play(sfx)
-	
 	gameovertitle = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(gameovertitle)
 	self.titles[0] = {gameovertitle, 300, 200, "Game Over", 315, 210, 30}
@@ -127,8 +134,6 @@ function menu:movesel(direction)
 		love.graphics.rectangle('fill', 0, 0, 200, 50)
 		love.graphics.setCanvas()
 		if self.select < #self.btns then
-			sfx = love.audio.newSource("assets/sound/swoosh.mp3", "static")
-			love.audio.play(sfx)
 			self.select = self.select + 1
 		end
 		self:renderbase()
@@ -138,8 +143,6 @@ function menu:movesel(direction)
 		love.graphics.rectangle('fill', 0, 0, 200, 50)
 		love.graphics.setCanvas()
 		if self.select > 0 then
-			sfx = love.audio.newSource("assets/sound/swoosh.mp3", "stream")
-			love.audio.play(sfx)
 			self.select = self.select - 1
 		end
 		self:renderbase()
