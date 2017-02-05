@@ -47,7 +47,7 @@ function love.load(arg)
     tt = love.graphics.newText(monofont, nil)
 
 	temp = menu()
-	temp:renderstart()
+	temp:rendergameover()
 end
 
 function love.keypressed(key, sc, rpt)
@@ -78,11 +78,11 @@ function btnpressed(key, sc, rpt, btn)
 
     if key == 'up' or sc == 'w' or btn == 'dpup' then
         gb:movsel(DIR_UP)
-		--temp:movesel("up")
+		temp:movesel("up")
     end
     if key == 'down' or sc == 's' or btn == 'dpdown' then
         gb:movsel(DIR_DOWN)
-		--temp:movesel("down")
+		temp:movesel("down")
     end
 
     -- TODO: Drop this input if directional button pressed
@@ -108,11 +108,11 @@ function love.update(dt)
 end
 
 function love.draw(dt)
-	--love.graphics.draw(temp.base)
+	love.graphics.draw(temp.base)
 
     --love.graphics.draw(bgimg, 0, 0)
 
-    love.graphics.draw(gb.canvas)
-    love.graphics.draw(tt, 8, gb.sz.y + 8)
+    --love.graphics.draw(gb.canvas)
+    --love.graphics.draw(tt, 8, gb.sz.y + 8)
 
 end
