@@ -21,3 +21,6 @@ DIR_RIGHT           = 0x0040
 DIR_LEFT            = 0x0080
 
 DIRMASK             = 0x00F0
+
+
+function clamp(low, high, n) return math.min(math.max(n, low), high) end

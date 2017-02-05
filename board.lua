@@ -157,6 +157,7 @@ function board:drip(dt)
         print(dr)
 
         if dr == 0 then
+            self:render()
             -- this pipe isn't full yet
             return
         end
@@ -178,5 +179,6 @@ function board:drip(dt)
         end
 
     end
+
 
 end

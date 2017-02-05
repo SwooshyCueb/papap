@@ -11,6 +11,7 @@ colors = {
 
     pipe_inside = {160, 160, 160, 255},
     pipe_outside = {80, 80, 80, 255},
+    pipe_water = {19, 61, 81},
 
     drain_lines = {40, 40, 40, 255},
     drain_holes = {70, 70, 70, 180},

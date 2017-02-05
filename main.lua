@@ -98,7 +98,7 @@ function btnpressed(key, sc, rpt, btn)
 end
 
 function love.update(dt)
-    currtimer = (bc + 5) - love.timer.getTime()
+    currtimer = (bc + 20) - love.timer.getTime()
     if currtimer > 0 then
         tt:set(string.format('%05.2f', currtimer))
     else

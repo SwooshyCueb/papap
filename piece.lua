@@ -62,6 +62,7 @@ function Piece:init(type)
 
     if bit.band(self.type, PIECE_SRC) ~= 0 then
         self.flow.flowing.dir_out = bit.band(self.type, DIRMASK)
+        self.flow.counter = 8
     end
 
     self:render()
@@ -134,7 +135,67 @@ function Piece:render()
             love.graphics.setColor(colors.default)
         end
 
-        -- Draw water
+        -- Draw flowing water
+        in_ct = clamp(0, 8, 16 - self.flow.counter)/8
+        out_ct = clamp(0, 8, 8 - self.flow.counter)/8
+        --print(in_ct)
+        --print(out_ct)
+
+        if bit.band(self.flow.flowing.dir_in, PIPE_DOWN) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*((3/4)+((1/4)*in_ct)), TILE_W*1/8, (TILE_H*9/16)*in_ct)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*((7/16)+((9/16)*(1-in_ct))), TILE_W*1/8, (TILE_H*9/16)*in_ct)
+                end
+            love.graphics.setColor(colors.default)
+        elseif bit.band(self.flow.flowing.dir_out, PIPE_DOWN) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*1/8, (TILE_H*9/16)*out_ct)
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(self.flow.flowing.dir_in, PIPE_UP) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, (TILE_H*1/4)*in_ct)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, (TILE_H*9/16)*in_ct)
+                end
+            love.graphics.setColor(colors.default)
+        elseif bit.band(self.flow.flowing.dir_out, PIPE_UP) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*((7/16)+((-9/16)*out_ct)), TILE_W*1/8, (TILE_H*9/16)*out_ct)
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(self.flow.flowing.dir_in, PIPE_LEFT) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, (TILE_H*1/4)*in_ct, TILE_H*1/8)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, (TILE_W*9/16)*in_ct, TILE_H*1/8)
+                end
+            love.graphics.setColor(colors.default)
+        elseif bit.band(self.flow.flowing.dir_out, PIPE_LEFT) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                love.graphics.rectangle('fill', TILE_W*((7/16)+((-9/16)*out_ct)), TILE_H*7/16, (TILE_W*9/16)*out_ct, TILE_H*1/8)
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(self.flow.flowing.dir_in, PIPE_RIGHT) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*((3/4)+((1/4)*(1-in_ct))), TILE_H*7/16, (TILE_W*1/4)*in_ct, TILE_H*1/8)
+                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*((7/16)+((9/16)*(1-in_ct))), TILE_H*7/16, (TILE_W*9/16)*in_ct, TILE_H*1/8)
+                end
+            love.graphics.setColor(colors.default)
+        elseif bit.band(self.flow.flowing.dir_out, PIPE_RIGHT) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, (TILE_W*9/16)*out_ct, TILE_H*1/8)
+            love.graphics.setColor(colors.default)
+        end
 
         -- Draw pipes (pt 2)
         love.graphics.setLineWidth(2)
@@ -265,7 +326,7 @@ function Piece:drip(direction)
         return self.flow.full.dir_out
     else
         self.flow.counter = self.flow.counter - 1
-
+        self:render()
     return 0
     end
 
