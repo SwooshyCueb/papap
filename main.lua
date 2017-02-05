@@ -30,7 +30,7 @@ function love.load(arg)
 
     love.window.setIcon(piece_images[PIECE_SRC]:newImageData())
 
-    gb = board(16, 8)
+    gb = board(8, 12)
 
     -- For some reason this breaks things.
     -- love.window.setMode(gb.sz.x, gb.sz.y)
@@ -45,7 +45,7 @@ function love.load(arg)
 
     bc = love.timer.getTime()
     tt = love.graphics.newText(monofont, nil)
-	
+
 	temp = menu()
 	temp:renderstart()
 end
@@ -109,7 +109,7 @@ end
 
 function love.draw(dt)
 	--love.graphics.draw(temp.base)
-	
+
     --love.graphics.draw(bgimg, 0, 0)
 
     love.graphics.draw(gb.canvas)
