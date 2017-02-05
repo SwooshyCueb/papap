@@ -52,14 +52,14 @@ function menu:renderstart()
 	love.graphics.setCanvas(startbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[0] = {startbtn, 100, 250, "start", 175, 265, 20}
+	self.btns[0] = {startbtn, 100, 250, "start", 175, 265, 20, 1}
 	love.graphics.setCanvas()
 	
 	exitbtn = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(exitbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[1] = {exitbtn, 100, 350, "exit", 180, 365, 20}
+	self.btns[1] = {exitbtn, 100, 350, "exit", 180, 365, 20, 0}
 	love.graphics.setCanvas()
 	
 	self:renderbase()
@@ -80,21 +80,14 @@ function menu:renderpause()
 	love.graphics.setCanvas(resumebtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[0] = {resumebtn, 100, 200, "Resume", 160, 215, 20}
-	love.graphics.setCanvas()
-
-	settingsbtn = love.graphics.newCanvas(200, 50)
-	love.graphics.setCanvas(settingsbtn)
-	love.graphics.setColor(150, 0, 175)
-	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[1] = {settingsbtn, 100, 300, "Settings", 160, 315, 20}
+	self.btns[0] = {resumebtn, 100, 200, "Resume", 160, 215, 20, 1}
 	love.graphics.setCanvas()
 	
 	exitbtn = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(exitbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[2] = {exitbtn, 100, 400, "Exit", 180, 415, 20}
+	self.btns[1] = {exitbtn, 100, 300, "Exit", 180, 315, 20, 0}
 	love.graphics.setCanvas()
 	
 	self:renderbase()
@@ -114,20 +107,21 @@ function menu:rendergameover()
 	love.graphics.setCanvas(playagainbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[0] = {playagainbtn, 100, 300, "Play Again", 150, 315, 20}
+	self.btns[0] = {playagainbtn, 100, 300, "Play Again", 150, 315, 20, 1}
 	love.graphics.setCanvas()
 	
 	mainmenubtn = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(mainmenubtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[1] = {mainmenubtn, 100, 375, "Main Menu", 147, 390, 20}
+	self.btns[1] = {mainmenubtn, 100, 375, "Main Menu", 147, 390, 20, 0}
 	love.graphics.setCanvas()
 	
 	self:renderbase()
 end
 
 function menu:movesel(direction)
+	state = 0
 	if direction == "down" then
 		love.graphics.setCanvas(self.btns[self.select][1])
 		love.graphics.setColor(150, 0, 175)
@@ -146,5 +140,9 @@ function menu:movesel(direction)
 			self.select = self.select - 1
 		end
 		self:renderbase()
+	elseif direction == "return" then
+			state = self.btns[self.select][8]
 	end
+	
+	return state
 end
