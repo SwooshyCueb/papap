@@ -86,7 +86,7 @@ function btnpressed(key, sc, rpt, btn)
 		end
     end
     if key == 'down' or sc == 's' or btn == 'dpdown' then
-		if state == 0 then	
+		if state == 0 then
 			temp:movesel("down")
 		elseif state == 1 then
 			gb:movsel(DIR_DOWN)
@@ -110,10 +110,12 @@ function btnpressed(key, sc, rpt, btn)
 end
 
 function love.update(dt)
-    currtimer = (bc + 20) - love.timer.getTime()
+    if state == 1 then
+        currtimer = currtimer - dt
+    end
     if currtimer > 0 then
         tt:set(string.format('%05.2f', currtimer))
-    else
+    elseif state == 1 then
         tt:set(string.format('%05.2f', 0.0))
         gb:drip(dt)
     end
