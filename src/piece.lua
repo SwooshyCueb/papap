@@ -55,8 +55,7 @@ function Piece:init(type)
         },
         counter = 16
     }
-    self.flooddir = 0
-    self.fulldir = 0
+    self.spilldir = 0
 
     if bit.band(self.type, PIECE_SRC) ~= 0 then
         self.flow.flowing.dir_out = bit.band(self.type, DIRMASK)
@@ -95,11 +94,27 @@ function Piece:render()
         if bit.band(self.type, PIECE_SPILL) ~= 0 then
             in_ct = clamp(0, 7/9, in_ct)
             love.graphics.setColor(colors.pipe_water)
-                love.graphics.circle('fill', TILE_W/2, TILE_H/2, TILE_W*((13/16)*out_ct))
+                if self.spilldir == 0 then
+                    love.graphics.circle('fill', TILE_W/2, TILE_H/2, TILE_W*((13/16)*out_ct))
+                end
+                if bit.band(self.spilldir, DIR_UP) ~= 0 then
+                    love.graphics.circle('fill', TILE_W/2, 0, TILE_H*out_ct)
+                end
+                if bit.band(self.spilldir, DIR_DOWN) ~= 0 then
+                    love.graphics.circle('fill', TILE_W/2, TILE_H, TILE_H*out_ct)
+                end
+                if bit.band(self.spilldir, DIR_LEFT) ~= 0 then
+                    love.graphics.circle('fill', 0, TILE_H/2, TILE_W*out_ct)
+                end
+                if bit.band(self.spilldir, DIR_RIGHT) ~= 0 then
+                    love.graphics.circle('fill', TILE_W, TILE_H/2, TILE_W*out_ct)
+                end
             love.graphics.setColor(colors.tile_alert)
-                love.graphics.setLineWidth(4)
-                    love.graphics.rectangle('line', 0, 0, TILE_W, TILE_H)
-                love.graphics.setLineWidth(2)
+                if self.flow.counter % 2 == 0 then
+                    love.graphics.setLineWidth(4)
+                        love.graphics.rectangle('line', 0, 0, TILE_W, TILE_H)
+                    love.graphics.setLineWidth(2)
+                end
             love.graphics.setColor(colors.default)
         end
 
@@ -337,9 +352,11 @@ function Piece:drip(direction)
 
     direction = direction or false
 
-    if direction == PIECE_SPILL then
+    if direction ~= false and bit.band(direction, PIECE_SPILL) ~= 0 then
         self.type = bit.bor(self.type, PIECE_SPILL)
         self.flow.counter = 8
+        self.spilldir = bit.bor(self.spilldir, bit.band(DIRMASK, direction))
+        return 0
     elseif direction ~= false then
 
         self.flow.flowing.dir_in = bit.bor(self.flow.flowing.dir_in, direction)
