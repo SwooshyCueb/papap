@@ -160,9 +160,12 @@ function board:drip(dt)
     -- TODO: support split drips
     -- TODO: handle running into walls
 
-    for i = 1, table.getn(self.currdrips) do
+    i = 1
+    repeat
+        currdrip = self.currdrips[i]
 
-        dr = self.field:drip(self.currdrips[i].x, self.currdrips[i].y)
+        dr = self.field:drip(currdrip.x, currdrip.y)
+        i = i + 1
 
         if dr == 0 then
             self:render()
@@ -170,23 +173,35 @@ function board:drip(dt)
             return
         end
 
-        if bit.band(dr, DIR_UP) ~= 0 and (self.currdrips[i].y ~= 1) then
-            self.currdrips[i].y = self.currdrips[i].y - 1
-            self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_DOWN)
-        elseif bit.band(dr, DIR_DOWN) ~= 0 and (self.currdrips[i].y ~= self.field.sz.y) then
-            self.currdrips[i].y = self.currdrips[i].y + 1
-            self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_UP)
+        table.remove(self.currdrips, i)
+        i = i - 1
+
+        if bit.band(dr, DIR_UP) ~= 0 and (currdrip.y ~= 1) then
+            newdrip = {x = currdrip.x, y = currdrip.y - 1}
+            self.field:drip(newdrip.x, newdrip.y, DIR_DOWN)
+            table.insert(self.currdrips, 1, newdrip)
+            i = i + 1
+        end
+        if bit.band(dr, DIR_DOWN) ~= 0 and (currdrip.y ~= self.field.sz.y) then
+            newdrip = {x = currdrip.x, y = currdrip.y + 1}
+            self.field:drip(newdrip.x, newdrip.y, DIR_UP)
+            table.insert(self.currdrips, 1, newdrip)
+            i = i + 1
+        end
+        if bit.band(dr, DIR_LEFT) ~= 0 and (currdrip.x ~= 1) then
+            newdrip = {x = currdrip.x - 1, y = currdrip.y}
+            self.field:drip(newdrip.x, newdrip.y, DIR_RIGHT)
+            table.insert(self.currdrips, 1, newdrip)
+            i = i + 1
+        end
+        if bit.band(dr, DIR_RIGHT) ~= 0 and (currdrip.x ~= self.field.sz.x) then
+            newdrip = {x = currdrip.x + 1, y = currdrip.y}
+            self.field:drip(newdrip.x, newdrip.y, DIR_LEFT)
+            table.insert(self.currdrips, 1, newdrip)
+            i = i + 1
         end
 
-        if bit.band(dr, DIR_LEFT) ~= 0 and (self.currdrips[i].x ~= 1) then
-            self.currdrips[i].x = self.currdrips[i].x - 1
-            self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_RIGHT)
-        elseif bit.band(dr, DIR_RIGHT) ~= 0 and (self.currdrips[i].x ~= self.field.sz.x) then
-            self.currdrips[i].x = self.currdrips[i].x + 1
-            self.field:drip(self.currdrips[i].x, self.currdrips[i].y, DIR_LEFT)
-        end
-
-    end
+    until i > table.getn(self.currdrips)
 
 
 end
