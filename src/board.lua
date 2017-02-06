@@ -65,7 +65,7 @@ function board:init(x, y)
         end
         if (sy == 1) and (bit.band(sdir, PIPE_UP) ~= 0) then
             i = false
-        elseif (sy == x) and (bit.band(sdir, PIPE_DOWN) ~= 0) then
+        elseif (sy == y) and (bit.band(sdir, PIPE_DOWN) ~= 0) then
             i = false
         end
     until i
