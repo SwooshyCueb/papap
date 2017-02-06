@@ -68,6 +68,7 @@ end
 
 function Piece:render()
     love.graphics.setCanvas(self.canvas)
+        love.graphics.setBackgroundColor(colors.invis)
         love.graphics.clear()
         if bit.band(self.type, bit.bor(PIECE_NONE, PIECE_SPILL)) == PIECE_NONE then
             love.graphics.setCanvas()

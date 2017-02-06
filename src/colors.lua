@@ -2,10 +2,9 @@ colors = {
     invis = {0, 0, 0, 0},
     default = {255, 255, 255, 255},
 
-    gridlines = {255, 255, 255, 220},
-    gridborder = {255, 255, 255, 255},
+    gridlines = {220, 220, 220, 220},
     grid_bg = {0, 0, 0, 130},
-    grid_sel = {184, 184, 0, 184},
+    grid_sel = {205, 200, 0, 210},
     tile_alert = {150, 13, 13, 255},
 
     tile_border = {40, 40, 40, 220},

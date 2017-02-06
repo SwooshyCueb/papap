@@ -18,9 +18,9 @@ function Grid:init(sz_x, sz_y)
         end
     end
 
-    self.basecanvas = love.graphics.newCanvas(self.sz.x*TILE_W, self.sz.y*TILE_H)
-    self.pipecanvas = love.graphics.newCanvas(self.sz.x*TILE_W, self.sz.y*TILE_H)
-    self.canvas = love.graphics.newCanvas(self.sz.x*TILE_W, self.sz.y*TILE_H)
+    self.basecanvas = love.graphics.newCanvas((self.sz.x*TILE_W)+16, (self.sz.y*TILE_H)+16)
+    self.pipecanvas = love.graphics.newCanvas((self.sz.x*TILE_W)+16, (self.sz.y*TILE_H)+16)
+    self.canvas = love.graphics.newCanvas((self.sz.x*TILE_W)+16, (self.sz.y*TILE_H)+16)
     self:render()
 
 end
@@ -58,16 +58,27 @@ function Grid:renderstg1()
     love.graphics.setCanvas(self.basecanvas)
         love.graphics.setBackgroundColor(colors.invis)
         love.graphics.clear()
-        love.graphics.setLineWidth(1)
-        for xpos = 0, self.sz.x-1 do
-            for ypos = 0, self.sz.y-1 do
-                love.graphics.setColor(colors.grid_bg)
-                    love.graphics.rectangle('fill', xpos*TILE_W, ypos*TILE_H, TILE_W, TILE_H)
-                love.graphics.setColor(colors.gridlines)
-                    love.graphics.rectangle('line', xpos*TILE_W, ypos*TILE_H, TILE_W, TILE_H)
-                love.graphics.setColor(colors.default)
+
+        love.graphics.stencil((function()
+            love.graphics.setLineWidth(1)
+            for xpos = 0, self.sz.x-1 do
+                for ypos = 0, self.sz.y-1 do
+                    love.graphics.rectangle('line', (xpos*TILE_W)+8, (ypos*TILE_H)+8, TILE_W, TILE_H)
+                end
             end
-        end
+            love.graphics.setLineWidth(2)
+            love.graphics.rectangle('line', 8, 8, TILE_W*self.sz.x, TILE_H*self.sz.y)
+        end), 'replace', 1, false)
+
+        love.graphics.setColor(colors.grid_bg)
+            love.graphics.setStencilTest("equal", 0)
+                love.graphics.rectangle('fill', 8, 8, (self.sz.x*TILE_W), (self.sz.y*TILE_H))
+            love.graphics.setStencilTest()
+        love.graphics.setColor(colors.gridlines)
+            love.graphics.setStencilTest("equal", 1)
+                love.graphics.rectangle('fill', 0, 0, (self.sz.x*TILE_W)+16, (self.sz.y*TILE_H)+16)
+            love.graphics.setStencilTest()
+        love.graphics.setColor(colors.default)
     love.graphics.setCanvas()
 end
 
@@ -78,13 +89,9 @@ function Grid:renderstg2()
         love.graphics.draw(self.basecanvas)
         for xpos = 0, self.sz.x-1 do
             for ypos = 0, self.sz.y-1 do
-                love.graphics.draw(self.map[xpos][ypos].canvas, xpos*TILE_W, ypos*TILE_H)
+                love.graphics.draw(self.map[xpos][ypos].canvas, (xpos*TILE_W)+8, (ypos*TILE_H)+8)
             end
         end
-        love.graphics.setColor(colors.gridborder)
-            love.graphics.setLineWidth(2)
-            love.graphics.rectangle('line', 0, 0, TILE_W*self.sz.x, TILE_H*self.sz.y)
-        love.graphics.setColor(colors.default)
     love.graphics.setCanvas()
 end
 
@@ -93,10 +100,12 @@ function Grid:renderstg3()
         love.graphics.setBackgroundColor(colors.invis)
         love.graphics.clear()
         love.graphics.draw(self.pipecanvas)
-        love.graphics.setLineWidth(3)
         if (self.selected.x*self.selected.y) ~= 0 then
-            love.graphics.setColor(colors.grid_sel)
-                love.graphics.rectangle('line', (self.selected.x-1)*TILE_W, (self.selected.y-1)*TILE_H, TILE_W, TILE_H)
+            love.graphics.setLineWidth(2)
+                love.graphics.setColor(colors.grid_sel)
+                love.graphics.setBlendMode('add')
+                    love.graphics.rectangle('line', ((self.selected.x-1)*TILE_W)+8, ((self.selected.y-1)*TILE_H)+8, TILE_W, TILE_H)
+                love.graphics.setBlendMode('alpha')
             love.graphics.setColor(colors.default)
         end
     love.graphics.setCanvas()

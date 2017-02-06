@@ -14,7 +14,7 @@ debug = true
 gb = nil
 state = nil
 
--- bgimg = nil
+bgimg = nil
 
 bc = 0
 flood = 30
@@ -33,7 +33,7 @@ function love.load(arg)
     -- For some reason this breaks things.
     -- love.window.setMode(gb.sz.x, gb.sz.y)
 
-    -- bgimg = love.graphics.newImage('assets/images/background_placeholder.jpg')
+    --bgimg = love.graphics.newImage('assets/images/background_placeholder.jpg')
 
     love.keyboard.setKeyRepeat(false)
 
@@ -120,6 +120,7 @@ function love.draw(dt)
 	if state == 0 then
 		love.graphics.draw(temp.base)
 	elseif state == 1 then
+        -- love.graphics.draw(bgimg, 0, 0)
 		love.graphics.draw(gb.canvas)
 		love.graphics.draw(tt, 8, gb.sz.y + 8)
 	end
