@@ -19,8 +19,8 @@
     [
         {
             "name": "Love2D",
-            "shell": true,
-            "cmd": ["love $project_path/src"],
+            "shell": false,
+            "cmd": ["love", "$project_path/src"],
             "file_regex": "^Error: (?:[^:]+: )?([^: ]+?):(\\d+):() ([^:]*)$"
         }
     ]
