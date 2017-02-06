@@ -47,7 +47,7 @@ function menu:renderstart()
 
 	gametitle = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(gametitle)
-	self.titles[0] = {gametitle, 100, 150, "Pipes\nand\nPipes\nand\nPipes", 160, 50, 30}
+	self.titles[0] = {gametitle, 100, 150, "Pipes\n and\nPipes\n and\nPipes", 160, 50, 30}
 	love.graphics.setCanvas()
 
 	startbtn = love.graphics.newCanvas(200, 50)
@@ -61,7 +61,7 @@ function menu:renderstart()
 	love.graphics.setCanvas(exitbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[1] = {exitbtn, 100, 350, "exit", 180, 365, 20, 0}
+	self.btns[1] = {exitbtn, 100, 325, "exit", 180, 340, 20, 2}
 	love.graphics.setCanvas()
 
 	self:renderbase()
@@ -82,14 +82,14 @@ function menu:renderpause()
 	love.graphics.setCanvas(resumebtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[0] = {resumebtn, 100, 200, "Resume", 160, 215, 20, 1}
+	self.btns[0] = {resumebtn, 100, 200, "resume", 160, 215, 20, 1}
 	love.graphics.setCanvas()
 
 	exitbtn = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(exitbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[1] = {exitbtn, 100, 300, "Exit", 180, 315, 20, 0}
+	self.btns[1] = {exitbtn, 100, 275, "exit", 180, 290, 20, 2}
 	love.graphics.setCanvas()
 
 	self:renderbase()
@@ -109,14 +109,41 @@ function menu:rendergameover()
 	love.graphics.setCanvas(playagainbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[0] = {playagainbtn, 100, 300, "Play Again", 150, 315, 20, 1}
+	self.btns[0] = {playagainbtn, 100, 300, "play again", 150, 315, 20, 1}
 	love.graphics.setCanvas()
 
 	mainmenubtn = love.graphics.newCanvas(200, 50)
 	love.graphics.setCanvas(mainmenubtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[1] = {mainmenubtn, 100, 375, "Main Menu", 147, 390, 20, 0}
+	self.btns[1] = {mainmenubtn, 100, 375, "exit", 180, 390, 20, 2}
+	love.graphics.setCanvas()
+
+	self:renderbase()
+end
+
+function menu:rendervictory()
+	self.select = 0
+	self.btns = {}
+	self.titles = {}
+
+	gameovertitle = love.graphics.newCanvas(200, 50)
+	love.graphics.setCanvas(gameovertitle)
+	self.titles[0] = {gameovertitle, 100, 200, "You Won!", 133, 210, 30}
+	love.graphics.setCanvas()
+
+	playagainbtn = love.graphics.newCanvas(200, 50)
+	love.graphics.setCanvas(playagainbtn)
+	love.graphics.setColor(150, 0, 175)
+	love.graphics.rectangle('fill', 0, 0, 200, 50)
+	self.btns[0] = {playagainbtn, 100, 300, "play again", 150, 315, 20, 1}
+	love.graphics.setCanvas()
+
+	mainmenubtn = love.graphics.newCanvas(200, 50)
+	love.graphics.setCanvas(mainmenubtn)
+	love.graphics.setColor(150, 0, 175)
+	love.graphics.rectangle('fill', 0, 0, 200, 50)
+	self.btns[1] = {mainmenubtn, 100, 375, "exit", 180, 390, 20, 2}
 	love.graphics.setCanvas()
 
 	self:renderbase()

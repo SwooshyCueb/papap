@@ -41,7 +41,7 @@ function love.load(arg)
     tt = love.graphics.newText(monofont, nil)
 
 	temp = menu()
-	temp:renderpause()
+	temp:renderstart()
 	state = 0
 end
 
@@ -127,5 +127,7 @@ function love.draw(dt)
         -- love.graphics.draw(bgimg, 0, 0)
 		love.graphics.draw(gb.canvas)
 		love.graphics.draw(tt, 8, gb.sz.y + 8)
+	elseif state == 2 then
+		os.exit()
 	end
 end
