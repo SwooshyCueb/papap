@@ -94,6 +94,7 @@ function Piece:render()
 
         -- Draw spill
         if bit.band(self.type, PIECE_SPILL) ~= 0 then
+            in_ct = clamp(0, 7/9, in_ct)
             love.graphics.setColor(colors.pipe_water)
                 love.graphics.circle('fill', TILE_W/2, TILE_H/2, TILE_W*((13/16)*out_ct))
             love.graphics.setColor(colors.tile_alert)
@@ -151,12 +152,11 @@ function Piece:render()
         end
 
         -- Draw flowing water
-
         if bit.band(self.flow.flowing.dir_in, PIPE_DOWN) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
                     love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*((3/4)+((1/4)*in_ct)), TILE_W*1/8, (TILE_H*9/16)*in_ct)
-                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                else
                     love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*((7/16)+((9/16)*(1-in_ct))), TILE_W*1/8, (TILE_H*9/16)*in_ct)
                 end
             love.graphics.setColor(colors.default)
@@ -170,7 +170,7 @@ function Piece:render()
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
                     love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, (TILE_H*1/4)*in_ct)
-                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                else
                     love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, (TILE_H*9/16)*in_ct)
                 end
             love.graphics.setColor(colors.default)
@@ -184,7 +184,7 @@ function Piece:render()
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
                     love.graphics.rectangle('fill', 0, TILE_H*7/16, (TILE_H*1/4)*in_ct, TILE_H*1/8)
-                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                else
                     love.graphics.rectangle('fill', 0, TILE_H*7/16, (TILE_W*9/16)*in_ct, TILE_H*1/8)
                 end
             love.graphics.setColor(colors.default)
@@ -198,7 +198,7 @@ function Piece:render()
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
                     love.graphics.rectangle('fill', TILE_W*((3/4)+((1/4)*(1-in_ct))), TILE_H*7/16, (TILE_W*1/4)*in_ct, TILE_H*1/8)
-                elseif bit.band(self.type, PIECE_PIPE) ~= 0 then
+                else
                     love.graphics.rectangle('fill', TILE_W*((7/16)+((9/16)*(1-in_ct))), TILE_H*7/16, (TILE_W*9/16)*in_ct, TILE_H*1/8)
                 end
             love.graphics.setColor(colors.default)
@@ -315,17 +315,17 @@ function Piece:drip(direction)
         end
 
 
-        if (bit.band(self.type, PIECE_DEST) == 0) then
+        if (bit.band(self.type, bit.bor(PIECE_DEST, PIECE_SPILL)) == 0) then
             if (bit.band(self.type, PIPE_X) == 0) then
                 self.flow.flowing.dir_out = bit.band(bit.band(DIRMASK, bit.bnot(direction)), self.type)
             elseif direction == DIR_UP then
                 self.flow.flowing.dir_out = bit.bor(self.flow.flowing.dir_out, DIR_DOWN)
             elseif direction == DIR_DOWN then
-                self.flow.flowing.dir_out = DIR_UP
+                self.flow.flowing.dir_out = bit.bor(self.flow.flowing.dir_out, DIR_UP)
             elseif direction == DIR_LEFT then
-                self.flow.flowing.dir_out = DIR_RIGHT
+                self.flow.flowing.dir_out = bit.bor(self.flow.flowing.dir_out, DIR_RIGHT)
             elseif direction == DIR_RIGHT then
-                self.flow.flowing.dir_out = DIR_LEFT
+                self.flow.flowing.dir_out = bit.bor(self.flow.flowing.dir_out, DIR_LEFT)
             end
         end
 
@@ -334,13 +334,15 @@ function Piece:drip(direction)
     elseif self.flow.counter == 0 then
         self.flow.counter = 16
 
-        self.flow.full.dir_out = self.flow.flowing.dir_out
+        ret = self.flow.flowing.dir_out
+
+        self.flow.full.dir_out = bit.bor(self.flow.flowing.dir_out, self.flow.full.dir_out)
         self.flow.flowing.dir_out = 0
 
-        self.flow.full.dir_in = self.flow.flowing.dir_in
+        self.flow.full.dir_in = bit.bor(self.flow.flowing.dir_out, self.flow.full.dir_out)
         self.flow.flowing.dir_in = 0
 
-        return self.flow.full.dir_out
+        return ret
     else
         self.flow.counter = self.flow.counter - 1
         self:render()
