@@ -331,11 +331,16 @@ function Piece:render()
     love.graphics.setCanvas()
 end
 
+-- I *think* as long as we only have a single source piece, flows can only meet
+-- *in* tiles and not at tile borders.
 function Piece:drip(direction)
 
     direction = direction or false
 
-    if direction ~= false then
+    if direction == PIECE_SPILL then
+        self.type = bit.bor(self.type, PIECE_SPILL)
+        self.flow.counter = 8
+    elseif direction ~= false then
 
         self.flow.flowing.dir_in = bit.bor(self.flow.flowing.dir_in, direction)
 
@@ -350,14 +355,14 @@ function Piece:drip(direction)
             self.type = bit.bor(self.type, PIECE_SPILL)
         end
 
-        if self.flow.flowing.dir_in == bit.band(DIRMASK, self.type) then
-            -- Spill, maybe?
-        end
-
 
         if (bit.band(self.type, bit.bor(PIECE_DEST, PIECE_SPILL)) == 0) then
-            if (bit.band(self.type, PIPE_X) == 0) then
-                self.flow.flowing.dir_out = bit.band(bit.band(DIRMASK, bit.bnot(direction)), self.type)
+            if self.flow.flowing.dir_in ~= direction then
+                -- If we have multiple flows going into the same tile,
+                -- use all available outputs
+                self.flow.flowing.dir_out = bit.band(bit.band(DIRMASK, bit.bnot(bit.bor(self.flow.flowing.dir_in, bit.bor(self.flow.full.dir_in, self.flow.full.dir_out)))), self.type)
+            elseif (bit.band(self.type, PIPE_X) == 0) then
+                self.flow.flowing.dir_out = bit.band(bit.band(DIRMASK, bit.bnot(bit.bor(self.flow.flowing.dir_in, bit.bor(self.flow.full.dir_in, self.flow.full.dir_out)))), self.type)
             elseif direction == DIR_UP then
                 self.flow.flowing.dir_out = bit.bor(self.flow.flowing.dir_out, DIR_DOWN)
             elseif direction == DIR_DOWN then
@@ -390,11 +395,29 @@ function Piece:drip(direction)
             return PIECE_DEST
         end
 
+        if self.flow.full.dir_in == bit.band(DIRMASK, self.type) then
+            self.flow.counter = 8
+            return PIPE_X
+        end
+
+        if dir == 0 then
+            self.flow.counter = 8
+            return PIECE_DEST
+        end
+
         return ret
+    elseif self.flow.counter == 8 and self.flow.flowing.dir_out == 0 then
+        if bit.band(self.type, bit.bor(PIECE_SPILL, PIECE_SRC)) == 0 then
+            self.flow.counter = 0
+        else
+            self.flow.counter = self.flow.counter - 1
+        end
+        self:render()
+        return 0
     else
         self.flow.counter = self.flow.counter - 1
         self:render()
-    return 0
+        return 0
     end
 
 end
