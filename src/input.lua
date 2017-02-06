@@ -20,6 +20,12 @@ a_input = {
     btn = 0x08
 }
 
+x_input = {
+    rshift = 0x01,
+    lshift = 0x02,
+    btn = 0x04
+}
+
 start_input = {
     esc = 0x01,
     btn = 0x02
@@ -31,6 +37,7 @@ input_state = {
     up = 0x0,
     down = 0x0,
     a = 0x0,
+    x = 0x0,
     start = 0x0
 }
 
@@ -91,6 +98,13 @@ function proc_input(key, sc, btn, press)
         input_state.a = stateval(input_state.a, a_input.space, press)
     elseif btn == 'a' then
         input_state.a = stateval(input_state.a, a_input.btn, press)
+
+    elseif sc == 'rshift' then
+        input_state.x = stateval(input_state.x, x_input.rshift, press)
+    elseif sc == 'lshift' then
+        input_state.x = stateval(input_state.x, x_input.lshift, press)
+    elseif btn == 'x' then
+        input_state.x = stateval(input_state.x, x_input.btn, press)
 
     elseif sc == 'escape' then
         input_state.start = stateval(input_state.start, start_input.esc, press)

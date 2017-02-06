@@ -2,9 +2,11 @@ require('common')
 require('grid')
 require('piece')
 require('colors')
+require('input')
 require('extern/class')
 
 drip_interval = 0.25
+drip_interval_fast = 0.0125
 
 
 board = class()
@@ -146,7 +148,11 @@ end
 
 function board:drip(dt)
     self.lastdrip = self.lastdrip + dt
-    if self.lastdrip < drip_interval then
+    if input_state.x ~= 0 then
+        if (self.lastdrip < drip_interval_fast) then
+            return
+        end
+    elseif (self.lastdrip < drip_interval) then
         return
     end
     self.lastdrip = 0
