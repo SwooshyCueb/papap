@@ -79,6 +79,9 @@ function Piece:render()
         love.graphics.clear()
         love.graphics.setLineWidth(2)
 
+        in_ct = clamp(0, 8, 16 - self.flow.counter)/8
+        out_ct = clamp(0, 8, 8 - self.flow.counter)/8
+
 
         -- Draw piece background
         if bit.band(self.type, PIECE_NONE) == 0 then
@@ -88,6 +91,18 @@ function Piece:render()
                 love.graphics.rectangle('line', 0, 0, TILE_W, TILE_H)
             love.graphics.setColor(colors.default)
         end
+
+        -- Draw spill
+        if bit.band(self.type, PIECE_SPILL) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                love.graphics.circle('fill', TILE_W/2, TILE_H/2, TILE_W*((13/16)*out_ct))
+            love.graphics.setColor(colors.tile_alert)
+                love.graphics.setLineWidth(4)
+                    love.graphics.rectangle('line', 0, 0, TILE_W, TILE_H)
+                love.graphics.setLineWidth(2)
+            love.graphics.setColor(colors.default)
+        end
+
 
         -- Draw "drain"
         if bit.band(self.type, PIECE_DEST) ~= 0 then
@@ -136,10 +151,6 @@ function Piece:render()
         end
 
         -- Draw flowing water
-        in_ct = clamp(0, 8, 16 - self.flow.counter)/8
-        out_ct = clamp(0, 8, 8 - self.flow.counter)/8
-        --print(in_ct)
-        --print(out_ct)
 
         if bit.band(self.flow.flowing.dir_in, PIPE_DOWN) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
@@ -286,6 +297,8 @@ function Piece:drip(direction)
 
     if direction ~= false then
 
+        self.flow.flowing.dir_in = bit.bor(self.flow.flowing.dir_in, direction)
+
         if (bit.band(self.type, PIECE_NONE) ~= 0) then
             -- Create spill if piece is empty
             self.type = bit.bor(self.type, PIECE_SPILL)
@@ -297,12 +310,16 @@ function Piece:drip(direction)
             self.type = bit.bor(self.type, PIECE_SPILL)
         end
 
-        self.flow.flowing.dir_in = direction
+        if self.flow.flowing.dir_in == bit.band(DIRMASK, self.type) then
+            -- Spill, maybe?
+        end
+
+
         if (bit.band(self.type, PIECE_DEST) == 0) then
             if (bit.band(self.type, PIPE_X) == 0) then
                 self.flow.flowing.dir_out = bit.band(bit.band(DIRMASK, bit.bnot(direction)), self.type)
             elseif direction == DIR_UP then
-                self.flow.flowing.dir_out = DIR_DOWN
+                self.flow.flowing.dir_out = bit.bor(self.flow.flowing.dir_out, DIR_DOWN)
             elseif direction == DIR_DOWN then
                 self.flow.flowing.dir_out = DIR_UP
             elseif direction == DIR_LEFT then

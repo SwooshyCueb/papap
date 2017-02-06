@@ -154,7 +154,6 @@ function board:drip(dt)
     for i = 1, table.getn(self.currdrips) do
 
         dr = self.field:drip(self.currdrips[i].x, self.currdrips[i].y)
-        print(dr)
 
         if dr == 0 then
             self:render()

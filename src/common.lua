@@ -24,3 +24,7 @@ DIRMASK             = 0x00F0
 
 
 function clamp(low, high, n) return math.min(math.max(n, low), high) end
+
+function printf(s,...)
+    return io.write(s:format(...))
+end
