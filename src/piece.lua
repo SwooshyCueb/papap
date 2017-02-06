@@ -151,6 +151,47 @@ function Piece:render()
             love.graphics.setColor(colors.default)
         end
 
+        -- Draw flowed water
+        if bit.band(bit.bor(self.flow.full.dir_in, self.flow.full.dir_out), PIPE_DOWN) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*3/4, TILE_W*1/8, TILE_H*1/4)
+                else
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*1/8, TILE_H*9/16)
+                end
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(bit.bor(self.flow.full.dir_in, self.flow.full.dir_out), PIPE_UP) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*1/4)
+                else
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*9/16)
+                end
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(bit.bor(self.flow.full.dir_in, self.flow.full.dir_out), PIPE_LEFT) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
+                else
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
+                end
+            love.graphics.setColor(colors.default)
+        end
+
+        if bit.band(bit.bor(self.flow.full.dir_in, self.flow.full.dir_out), PIPE_RIGHT) ~= 0 then
+            love.graphics.setColor(colors.pipe_water)
+                if bit.band(self.type, PIECE_DEST) ~= 0 then
+                    love.graphics.rectangle('fill', TILE_W*3/4, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
+                else
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
+                end
+            love.graphics.setColor(colors.default)
+        end
+
         -- Draw flowing water
         if bit.band(self.flow.flowing.dir_in, PIPE_DOWN) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
@@ -332,6 +373,10 @@ function Piece:drip(direction)
         return 0
 
     elseif self.flow.counter == 0 then
+        if bit.band(self.type, PIECE_SPILL) ~= 0 then
+            return PIECE_SPILL
+        end
+
         self.flow.counter = 16
 
         ret = self.flow.flowing.dir_out
@@ -339,8 +384,12 @@ function Piece:drip(direction)
         self.flow.full.dir_out = bit.bor(self.flow.flowing.dir_out, self.flow.full.dir_out)
         self.flow.flowing.dir_out = 0
 
-        self.flow.full.dir_in = bit.bor(self.flow.flowing.dir_out, self.flow.full.dir_out)
+        self.flow.full.dir_in = bit.bor(self.flow.flowing.dir_in, self.flow.full.dir_in)
         self.flow.flowing.dir_in = 0
+
+        if bit.band(self.type, PIECE_DEST) ~= 0 then
+            return PIECE_DEST
+        end
 
         return ret
     else
