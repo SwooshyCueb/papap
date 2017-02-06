@@ -22,6 +22,9 @@ DIR_LEFT            = 0x0080
 
 DIRMASK             = 0x00F0
 
+stdfont = love.graphics.newFont('assets/fonts/NovaSquare.ttf', 18)
+titlefont = love.graphics.newFont('assets/fonts/NovaSquare.ttf', 28)
+monofont = love.graphics.newFont('assets/fonts/NovaMono.ttf', 18)
 
 function clamp(low, high, n) return math.min(math.max(n, low), high) end
 

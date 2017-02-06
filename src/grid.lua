@@ -56,6 +56,7 @@ end
 
 function Grid:renderstg1()
     love.graphics.setCanvas(self.basecanvas)
+        love.graphics.setBackgroundColor(colors.invis)
         love.graphics.clear()
         love.graphics.setLineWidth(1)
         for xpos = 0, self.sz.x-1 do
@@ -72,6 +73,7 @@ end
 
 function Grid:renderstg2()
     love.graphics.setCanvas(self.pipecanvas)
+        love.graphics.setBackgroundColor(colors.invis)
         love.graphics.clear()
         love.graphics.draw(self.basecanvas)
         for xpos = 0, self.sz.x-1 do
@@ -79,11 +81,16 @@ function Grid:renderstg2()
                 love.graphics.draw(self.map[xpos][ypos].canvas, xpos*TILE_W, ypos*TILE_H)
             end
         end
+        love.graphics.setColor(colors.gridborder)
+            love.graphics.setLineWidth(2)
+            love.graphics.rectangle('line', 0, 0, TILE_W*self.sz.x, TILE_H*self.sz.y)
+        love.graphics.setColor(colors.default)
     love.graphics.setCanvas()
 end
 
 function Grid:renderstg3()
     love.graphics.setCanvas(self.canvas)
+        love.graphics.setBackgroundColor(colors.invis)
         love.graphics.clear()
         love.graphics.draw(self.pipecanvas)
         love.graphics.setLineWidth(3)

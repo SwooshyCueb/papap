@@ -19,9 +19,6 @@ state = nil
 bc = 0
 flood = 30
 currtimer = 30
-stdfont = nil
-monofont = nil
-
 tt = nil
 
 function love.load(arg)
@@ -39,10 +36,6 @@ function love.load(arg)
     -- bgimg = love.graphics.newImage('assets/images/background_placeholder.jpg')
 
     love.keyboard.setKeyRepeat(false)
-
-    stdfont = love.graphics.newFont('assets/fonts/NovaSquare.ttf', 18)
-    monofont = love.graphics.newFont('assets/fonts/NovaMono.ttf', 18)
-
 
     bc = love.timer.getTime()
     tt = love.graphics.newText(monofont, nil)
@@ -122,6 +115,8 @@ function love.update(dt)
 end
 
 function love.draw(dt)
+    love.graphics.setBackgroundColor(colors.game_bg)
+    love.graphics.clear()
 	if state == 0 then
 		love.graphics.draw(temp.base)
 	elseif state == 1 then

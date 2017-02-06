@@ -94,6 +94,9 @@ end
 
 function board:render()
     love.graphics.setCanvas(self.canvas)
+        love.graphics.setBackgroundColor(colors.invis)
+        love.graphics.clear()
+        love.graphics.setLineWidth(2)
         love.graphics.draw(self.field.canvas, 8, 8)
         love.graphics.draw(self.currg.canvas, 8, 16+(self.field.sz.y*TILE_H))
         love.graphics.draw(self.nextg.canvas, 8+((self.field.sz.x - 4)*TILE_W), 16+(self.field.sz.y*TILE_H))

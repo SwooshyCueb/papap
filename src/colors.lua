@@ -3,6 +3,7 @@ colors = {
     default = {255, 255, 255, 255},
 
     gridlines = {255, 255, 255, 220},
+    gridborder = {255, 255, 255, 255},
     grid_bg = {0, 0, 0, 130},
     grid_sel = {184, 184, 0, 184},
     tile_alert = {150, 13, 13, 255},
@@ -20,4 +21,6 @@ colors = {
 
     faucet_lines = {40, 40, 40, 255},
     faucet_fg = {46, 59, 173, 255},
+
+    game_bg = {0, 0, 0, 255},
 }
