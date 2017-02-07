@@ -97,7 +97,10 @@ function btnpressed(key, sc, rpt, btn)
 
     -- TODO: make this do stuff
     if sc == 'escape' or btn == 'start' then
-        -- Pause menu? Show controls? wat do
+        if state == 1 then
+            state = 0
+            temp:renderpause()
+        end
     end
 
 end
