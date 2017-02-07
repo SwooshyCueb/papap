@@ -19,6 +19,7 @@ function love.conf(game)
     -- mouse/touchscreen support is not currently a priority
     game.modules.mouse = false
     game.modules.touch = false
+    game.modules.sound = false
 
     -- game.window.icon =
 end
