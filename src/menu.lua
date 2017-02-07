@@ -109,7 +109,7 @@ function menu:rendergameover()
 	love.graphics.setCanvas(playagainbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[0] = {playagainbtn, 100, 300, "play again", 150, 315, 20, 1}
+	self.btns[0] = {playagainbtn, 100, 300, "play again", 150, 315, 20, 3}
 	love.graphics.setCanvas()
 
 	mainmenubtn = love.graphics.newCanvas(200, 50)
@@ -136,7 +136,7 @@ function menu:rendervictory()
 	love.graphics.setCanvas(playagainbtn)
 	love.graphics.setColor(150, 0, 175)
 	love.graphics.rectangle('fill', 0, 0, 200, 50)
-	self.btns[0] = {playagainbtn, 100, 300, "play again", 150, 315, 20, 1}
+	self.btns[0] = {playagainbtn, 100, 300, "play again", 150, 315, 20, 3}
 	love.graphics.setCanvas()
 
 	mainmenubtn = love.graphics.newCanvas(200, 50)

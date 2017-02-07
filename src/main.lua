@@ -117,7 +117,18 @@ function love.update(dt)
         tt:set(string.format('%05.2f', currtimer))
     elseif state == 1 then
         tt:set(string.format('%05.2f', 0.0))
-        gb:drip(dt)
+        gostate = gb:drip(dt)
+        if gostate == GAME_OVER_LOSE then
+            state = 0
+            temp:rendergameover()
+        elseif gostate == GAME_OVER_WIN then
+            state = 0
+            temp:rendervictory()
+        end
+    end
+    if state == 3 then
+        gb = board(8, 12)
+        state = 1
     end
 end
 
