@@ -169,7 +169,7 @@ function Piece:render()
         if bit.band(bit.bor(self.flow.full.dir_in, self.flow.full.dir_out), PIPE_DOWN) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
-                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*3/4, TILE_W*1/8, TILE_H*1/4)
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*11/16, TILE_W*1/8, TILE_H*5/16)
                 else
                     love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*1/8, TILE_H*9/16)
                 end
@@ -179,7 +179,7 @@ function Piece:render()
         if bit.band(bit.bor(self.flow.full.dir_in, self.flow.full.dir_out), PIPE_UP) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
-                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*1/4)
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*5/16)
                 else
                     love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, TILE_H*9/16)
                 end
@@ -189,7 +189,7 @@ function Piece:render()
         if bit.band(bit.bor(self.flow.full.dir_in, self.flow.full.dir_out), PIPE_LEFT) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
-                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*5/16, TILE_H*1/8)
                 else
                     love.graphics.rectangle('fill', 0, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
                 end
@@ -199,7 +199,7 @@ function Piece:render()
         if bit.band(bit.bor(self.flow.full.dir_in, self.flow.full.dir_out), PIPE_RIGHT) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
-                    love.graphics.rectangle('fill', TILE_W*3/4, TILE_H*7/16, TILE_W*1/4, TILE_H*1/8)
+                    love.graphics.rectangle('fill', TILE_W*11/16, TILE_H*7/16, TILE_W*5/16, TILE_H*1/8)
                 else
                     love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*7/16, TILE_W*9/16, TILE_H*1/8)
                 end
@@ -210,7 +210,7 @@ function Piece:render()
         if bit.band(self.flow.flowing.dir_in, PIPE_DOWN) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
-                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*((3/4)+((1/4)*(1-in_ct))), TILE_W*1/8, (TILE_H*9/16)*in_ct)
+                    love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*((11/16)+((5/16)*(1-in_ct))), TILE_W*1/8, (TILE_H*5/16)*in_ct)
                 else
                     love.graphics.rectangle('fill', TILE_W*7/16, TILE_H*((7/16)+((9/16)*(1-in_ct))), TILE_W*1/8, (TILE_H*9/16)*in_ct)
                 end
@@ -224,7 +224,7 @@ function Piece:render()
         if bit.band(self.flow.flowing.dir_in, PIPE_UP) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
-                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, (TILE_H*1/4)*in_ct)
+                    love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, (TILE_H*5/16)*in_ct)
                 else
                     love.graphics.rectangle('fill', TILE_W*7/16, 0, TILE_W*1/8, (TILE_H*9/16)*in_ct)
                 end
@@ -238,7 +238,7 @@ function Piece:render()
         if bit.band(self.flow.flowing.dir_in, PIPE_LEFT) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
-                    love.graphics.rectangle('fill', 0, TILE_H*7/16, (TILE_H*1/4)*in_ct, TILE_H*1/8)
+                    love.graphics.rectangle('fill', 0, TILE_H*7/16, (TILE_H*5/16)*in_ct, TILE_H*1/8)
                 else
                     love.graphics.rectangle('fill', 0, TILE_H*7/16, (TILE_W*9/16)*in_ct, TILE_H*1/8)
                 end
@@ -252,7 +252,7 @@ function Piece:render()
         if bit.band(self.flow.flowing.dir_in, PIPE_RIGHT) ~= 0 then
             love.graphics.setColor(colors.pipe_water)
                 if bit.band(self.type, PIECE_DEST) ~= 0 then
-                    love.graphics.rectangle('fill', TILE_W*((3/4)+((1/4)*(1-in_ct))), TILE_H*7/16, (TILE_W*1/4)*in_ct, TILE_H*1/8)
+                    love.graphics.rectangle('fill', TILE_W*((11/16)+((5/16)*(1-in_ct))), TILE_H*7/16, (TILE_W*5/16)*in_ct, TILE_H*1/8)
                 else
                     love.graphics.rectangle('fill', TILE_W*((7/16)+((9/16)*(1-in_ct))), TILE_H*7/16, (TILE_W*9/16)*in_ct, TILE_H*1/8)
                 end
