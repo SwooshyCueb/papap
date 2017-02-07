@@ -11,7 +11,7 @@ function love.conf(game)
     game.window.vsync = false
 
     -- debugging
-    game.console = true
+    game.console = false
 
     -- we (probably) won't need physics
     game.modules.physics = false
