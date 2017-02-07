@@ -25,9 +25,9 @@ DIRMASK             = 0x00F0
 GAME_OVER_LOSE      = 0x0001
 GAME_OVER_WIN       = 0x0002
 
-stdfont = love.graphics.newFont('assets/fonts/NovaSquare.ttf', 18)
-titlefont = love.graphics.newFont('assets/fonts/NovaSquare.ttf', 28)
-monofont = love.graphics.newFont('assets/fonts/NovaMono.ttf', 18)
+igfont_std = love.graphics.newFont('assets/fonts/NovaSquare.ttf', 16)
+igfont_fxw = love.graphics.newFont('assets/fonts/NovaMono.ttf', 16)
+lgfont_std = love.graphics.newFont('assets/fonts/NovaSquare.ttf', 32)
 
 function clamp(low, high, n) return math.min(math.max(n, low), high) end
 

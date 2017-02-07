@@ -38,7 +38,7 @@ function love.load(arg)
     love.keyboard.setKeyRepeat(false)
 
     bc = love.timer.getTime()
-    tt = love.graphics.newText(monofont, nil)
+    tt = love.graphics.newText(igfont_fxw, nil)
 
 	temp = menu()
 	temp:renderstart()
@@ -140,7 +140,7 @@ function love.draw(dt)
 	elseif state == 1 then
         -- love.graphics.draw(bgimg, 0, 0)
 		love.graphics.draw(gb.canvas)
-		love.graphics.draw(tt, 8, gb.sz.y + 8)
+		love.graphics.draw(tt, 12 + TILE_W, gb.sz.y - (6 + TILE_H))
 	elseif state == 2 then
 		os.exit()
 	end

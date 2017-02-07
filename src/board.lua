@@ -88,6 +88,7 @@ function board:init(x, y)
     self.nextg:set(3, 1, get_random_pipe())
     self.nextg:set(4, 1, get_random_pipe())
 
+    self.basecanvas = love.graphics.newCanvas(w, h)
     self.canvas = love.graphics.newCanvas(w, h)
 
     self.lastdrip = 0
@@ -96,8 +97,17 @@ function board:init(x, y)
     self.spills = 0
     self.potential_spills = {}
     self.got_to_dest = false
-    -- self.currdrips = {self.sourceloc}
-    --self.currdrip = self.sourceloc
+
+
+    tl = love.graphics.newText(igfont_std, 'water flowing in:')
+    tu = love.graphics.newText(igfont_std, 'seconds')
+    love.graphics.setCanvas(self.basecanvas)
+        love.graphics.setBackgroundColor(colors.invis)
+        love.graphics.clear()
+        love.graphics.draw(tl, 12 + TILE_W, h - (20 + TILE_H))
+        love.graphics.draw(tu, 62 + TILE_W, h - (3 + TILE_H))
+    love.graphics.setCanvas()
+
 
     self:render()
 end
@@ -110,6 +120,7 @@ function board:render()
         love.graphics.draw(self.field.canvas)
         love.graphics.draw(self.currg.canvas, 0, 8+(self.field.sz.y*TILE_H))
         love.graphics.draw(self.nextg.canvas, ((self.field.sz.x - 4)*TILE_W), 8+(self.field.sz.y*TILE_H))
+        love.graphics.draw(self.basecanvas)
     love.graphics.setCanvas()
 end
 

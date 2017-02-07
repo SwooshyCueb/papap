@@ -5,7 +5,7 @@ function love.conf(game)
     game.version = '0.10.2'
     game.window.width = 400
     -- game.window.height = 600
-    game.window.height = 700
+    game.window.height = 648
     game.window.resizable = false
     game.window.fullscreen = false
     game.window.vsync = false
