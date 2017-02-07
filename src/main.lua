@@ -40,9 +40,9 @@ function love.load(arg)
     bc = love.timer.getTime()
     tt = love.graphics.newText(igfont_fxw, nil)
 
-	temp = menu()
-	temp:renderstart()
-	state = 0
+    temp = menu()
+    temp:renderstart()
+    state = 0
 end
 
 function love.keypressed(key, sc, rpt)
@@ -73,26 +73,26 @@ function btnpressed(key, sc, rpt, btn)
 
     if key == 'up' or sc == 'w' or btn == 'dpup' then
         if state == 0 then
-			temp:movesel("up")
-		elseif state == 1 then
-			gb:movsel(DIR_UP)
-		end
+            temp:movesel("up")
+        elseif state == 1 then
+            gb:movsel(DIR_UP)
+        end
     end
     if key == 'down' or sc == 's' or btn == 'dpdown' then
-		if state == 0 then
-			temp:movesel("down")
-		elseif state == 1 then
-			gb:movsel(DIR_DOWN)
-		end
+        if state == 0 then
+            temp:movesel("down")
+        elseif state == 1 then
+            gb:movsel(DIR_DOWN)
+        end
     end
 
     -- TODO: Drop this input if directional button pressed
     if sc == 'return' or sc == 'e' or sc == 'space' or btn == 'a' then
         if state == 0 then
-			state = temp:movesel("return")
-		elseif state == 1 then
-			gb:play()
-		end
+            state = temp:movesel("return")
+        elseif state == 1 then
+            gb:play()
+        end
     end
 
     -- TODO: make this do stuff
@@ -135,13 +135,13 @@ end
 function love.draw(dt)
     love.graphics.setBackgroundColor(colors.game_bg)
     love.graphics.clear()
-	if state == 0 then
-		love.graphics.draw(temp.base)
-	elseif state == 1 then
+    if state == 0 then
+        love.graphics.draw(temp.base)
+    elseif state == 1 then
         -- love.graphics.draw(bgimg, 0, 0)
-		love.graphics.draw(gb.canvas)
-		love.graphics.draw(tt, 12 + TILE_W, gb.sz.y - (6 + TILE_H))
-	elseif state == 2 then
-		os.exit()
-	end
+        love.graphics.draw(gb.canvas)
+        love.graphics.draw(tt, 12 + TILE_W, gb.sz.y - (6 + TILE_H))
+    elseif state == 2 then
+        os.exit()
+    end
 end
