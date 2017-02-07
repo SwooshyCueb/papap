@@ -129,6 +129,7 @@ function love.update(dt)
     if state == 3 then
         gb = board(8, 12)
         state = 1
+        currtimer = 30
     end
 end
 
