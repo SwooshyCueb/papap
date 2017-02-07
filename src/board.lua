@@ -54,6 +54,9 @@ function board:init(x, y)
     -- Choose direction of source
     repeat
         sdir = pdirections[math.random(1, table.getn(pdirections))]
+        sdir = bit.bor(sdir, pdirections[math.random(1, table.getn(pdirections))])
+        sdir = bit.bor(sdir, pdirections[math.random(1, table.getn(pdirections))])
+        sdir = bit.bor(sdir, pdirections[math.random(1, table.getn(pdirections))])
         -- difficulty can be increased by having more than one direction
 
         -- ensure we're not going straight into a wall
@@ -88,7 +91,12 @@ function board:init(x, y)
     self.canvas = love.graphics.newCanvas(w, h)
 
     self.lastdrip = 0
-    self.currdrips = {self.sourceloc}
+    self.currdrips = {}
+    table.insert(self.currdrips, bit.lshift(self.sourceloc.x, 4) + self.sourceloc.y)
+    self.spills = 0
+    self.potential_spills = {}
+    self.got_to_dest = false
+    -- self.currdrips = {self.sourceloc}
     --self.currdrip = self.sourceloc
 
     self:render()
@@ -170,40 +178,76 @@ function board:drip(dt)
     end
     self.currdrips = drips
 
+    if table.getn(self.currdrips) == 0 then
+        if self.spills ~= 0 then
+            return GAME_OVER_LOSE
+        elseif self.got_to_dest then
+            return GAME_OVER_WIN
+        elseif table.getn(self.potential_spills) ~= 0 then
+            for _,v in ipairs(self.potential_spills) do
+                table.insert(self.currdrips, v)
+
+                newspill = {x = 0, y = 0}
+                newspill.x = bit.rshift(v, 4)
+                newspill.y = v - bit.lshift(newspill.x, 4)
+
+                self.field:drip(newspill.x, newspill.y, PIECE_SPILL)
+            end
+        end
+    end
+
     i = 1
     repeat
-        currdrip = self.currdrips[i]
+        if table.getn(self.currdrips) == 0 then
+            break
+        end
 
-        dr = self.field:drip(currdrip.x, currdrip.y)
+        currdrip = {x = 0, y = 0}
+        currdrip.x = bit.rshift(self.currdrips[i], 4)
+        currdrip.y = self.currdrips[i] - bit.lshift(currdrip.x, 4)
+
+        local dr = self.field:drip(currdrip.x, currdrip.y)
         i = i + 1
 
         if dr == 0 then
             self:render()
             -- this pipe isn't full yet
         else
+            if bit.band(dr, PIECE_SPILL) ~= 0 then
+                self.spills = self.spills + 1
+            end
 
-            table.remove(self.currdrips, i)
+            if bit.band(dr, PIPE_X) ~= 0 then
+                table.insert(self.potential_spills, bit.lshift(currdrip.x, 4) + currdrip.y)
+            end
+
+            if bit.band(dr, PIECE_DEST) ~= 0 then
+                self.got_to_dest = true
+            end
+
+            table.remove(self.currdrips, i-1)
             i = i - 1
 
             if bit.band(dr, DIR_UP) ~= 0 then
                 if (currdrip.y ~= 1) then
                     newdrip = {x = currdrip.x, y = currdrip.y - 1}
                     self.field:drip(newdrip.x, newdrip.y, DIR_DOWN)
-                    table.insert(self.currdrips, 1, newdrip)
+                    table.insert(self.currdrips, 1, bit.lshift(newdrip.x, 4) + newdrip.y)
                 else
                     self.field:drip(currdrip.x, currdrip.y, bit.bor(PIECE_SPILL, DIR_UP))
-                    table.insert(self.currdrips, 1, currdrip)
+                    table.insert(self.currdrips, 1, bit.lshift(currdrip.x, 4) + currdrip.y)
                 end
                 i = i + 1
+                print(dr)
             end
             if bit.band(dr, DIR_DOWN) ~= 0 then
                 if (currdrip.y ~= self.field.sz.y) then
                     newdrip = {x = currdrip.x, y = currdrip.y + 1}
                     self.field:drip(newdrip.x, newdrip.y, DIR_UP)
-                    table.insert(self.currdrips, 1, newdrip)
+                    table.insert(self.currdrips, 1, bit.lshift(newdrip.x, 4) + newdrip.y)
                 else
                     self.field:drip(currdrip.x, currdrip.y, bit.bor(PIECE_SPILL, DIR_DOWN))
-                    table.insert(self.currdrips, 1, currdrip)
+                    table.insert(self.currdrips, 1, bit.lshift(currdrip.x, 4) + currdrip.y)
                 end
                 i = i + 1
             end
@@ -211,10 +255,10 @@ function board:drip(dt)
                 if (currdrip.x ~= 1) then
                     newdrip = {x = currdrip.x - 1, y = currdrip.y}
                     self.field:drip(newdrip.x, newdrip.y, DIR_RIGHT)
-                    table.insert(self.currdrips, 1, newdrip)
+                    table.insert(self.currdrips, 1, bit.lshift(newdrip.x, 4) + newdrip.y)
                 else
                     self.field:drip(currdrip.x, currdrip.y, bit.bor(PIECE_SPILL, DIR_LEFT))
-                    table.insert(self.currdrips, 1, currdrip)
+                    table.insert(self.currdrips, 1, bit.lshift(currdrip.x, 4) + currdrip.y)
                 end
                 i = i + 1
             end
@@ -222,12 +266,16 @@ function board:drip(dt)
                 if (currdrip.x ~= self.field.sz.x) then
                     newdrip = {x = currdrip.x + 1, y = currdrip.y}
                     self.field:drip(newdrip.x, newdrip.y, DIR_LEFT)
-                    table.insert(self.currdrips, 1, newdrip)
+                    table.insert(self.currdrips, 1, bit.lshift(newdrip.x, 4) + newdrip.y)
                 else
                     self.field:drip(currdrip.x, currdrip.y, bit.bor(PIECE_SPILL, DIR_RIGHT))
-                    table.insert(self.currdrips, 1, currdrip)
+                    table.insert(self.currdrips, 1, bit.lshift(currdrip.x, 4) + currdrip.y)
                 end
                 i = i + 1
+            end
+
+            if table.getn(self.currdrips) == 0 then
+                return
             end
         end
 
