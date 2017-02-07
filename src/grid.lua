@@ -38,13 +38,16 @@ function Grid:set(x, y, piece)
 end
 
 function Grid:drip(x, y, dir)
-    --printf("flowing: %u, %u\n", x, y)
-    local dr = self.map[x-1][y-1]:drip(dir)
-    if dr == PIECE_SPILL then
-        --printf("UH OH WE GOT A SPILL BOYS\n")
-    elseif dr == PIECE_DEST then
-        --printf("Flow made it to destination\n")
+    --[[
+    printf("%02u, %02u", x, y)
+    if dir ~= nil then
+        printf(", 0x%08x: ", dir)
+    else
+        printf(", ----------: ")
     end
+    --]]
+    local dr = self.map[x-1][y-1]:drip(dir)
+    --printf("0x%08x\n", dr)
     self:renderstg2()
     self:renderstg3()
     return dr

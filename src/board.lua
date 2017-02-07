@@ -249,7 +249,6 @@ function board:drip(dt)
                     table.insert(self.currdrips, 1, bit.lshift(currdrip.x, 4) + currdrip.y)
                 end
                 i = i + 1
-                print(dr)
             end
             if bit.band(dr, DIR_DOWN) ~= 0 then
                 if (currdrip.y ~= self.field.sz.y) then

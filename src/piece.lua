@@ -417,12 +417,12 @@ function Piece:drip(direction)
             return PIPE_X
         end
 
-        if dir == 0 then
+        if ret == 0 then
             self.flow.counter = 8
             return PIECE_SRC
         end
 
-        print(ret)
+        -- print(ret)
         return ret
     elseif self.flow.counter == 8 and self.flow.flowing.dir_out == 0 then
         if bit.band(self.type, bit.bor(PIECE_SPILL, PIECE_SRC)) == 0 then
