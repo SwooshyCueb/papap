@@ -24,9 +24,9 @@ colors = {
     game_bg = {0, 0, 0, 255},
 
     menu_bg = {24, 24, 24, 255},
-    menu_backdrop = {0, 0, 0, 90},
+    menu_backdrop = {0, 0, 0, 140},
     menu_border = {48, 48, 48, 255},
-    menu_shadow = {16, 16, 16, 210},
+    menu_shadow = {16, 16, 16, 220},
     menu_name = {162, 162, 162, 255},
     menu_text = {128, 128, 128, 255},
 

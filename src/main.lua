@@ -185,8 +185,12 @@ function love.draw(dt)
     elseif state == GAME_STATE_PAUSED then
         love.graphics.draw(menu_pause.canvas)
     elseif state == GAME_STATE_LOSS then
+        love.graphics.draw(gb.canvas)
+        love.graphics.draw(tt, 12 + TILE_W, gb.sz.y - (6 + TILE_H))
         love.graphics.draw(menu_go_loss.canvas)
     elseif state == GAME_STATE_WIN then
+        love.graphics.draw(gb.canvas)
+        love.graphics.draw(tt, 12 + TILE_W, gb.sz.y - (6 + TILE_H))
         love.graphics.draw(menu_go_win.canvas)
     end
 end
