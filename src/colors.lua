@@ -22,6 +22,7 @@ colors = {
     faucet_fg = {46, 59, 173, 255},
 
     game_bg = {0, 0, 0, 255},
+    game_bg_alpha = {255, 255, 255, 64},
 
     menu_bg = {24, 24, 24, 255},
     menu_backdrop = {0, 0, 0, 140},

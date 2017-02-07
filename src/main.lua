@@ -33,7 +33,7 @@ function love.load(arg)
     -- For some reason this breaks things.
     -- love.window.setMode(gb.sz.x, gb.sz.y)
 
-    --bgimg = love.graphics.newImage('assets/images/background_placeholder.jpg')
+    bgimg = love.graphics.newImage('assets/images/papap_background.png')
 
     love.keyboard.setKeyRepeat(false)
 
@@ -177,6 +177,9 @@ end
 function love.draw(dt)
     love.graphics.setBackgroundColor(colors.game_bg)
     love.graphics.clear()
+    love.graphics.setColor(colors.game_bg_alpha)
+        love.graphics.draw(bgimg)
+    love.graphics.setColor(colors.default)
     if state == GAME_STATE_LAUNCH then
         love.graphics.draw(menu_start.canvas)
     elseif state == GAME_STATE_PLAY then
