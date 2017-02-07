@@ -191,9 +191,9 @@ function board:drip(dt)
 
     if table.getn(self.currdrips) == 0 then
         if self.spills ~= 0 then
-            return GAME_OVER_LOSE
+            return GAME_STATE_LOSS
         elseif self.got_to_dest then
-            return GAME_OVER_WIN
+            return GAME_STATE_WIN
         elseif table.getn(self.potential_spills) ~= 0 then
             for _,v in ipairs(self.potential_spills) do
                 table.insert(self.currdrips, v)
