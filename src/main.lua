@@ -156,7 +156,7 @@ function love.update(dt)
         if input_state.x ~= 0 then
             currtimer = currtimer - dt*20
         else
-            --currtimer = currtimer - dt
+            currtimer = currtimer - dt
         end
         if currtimer > 0 then
             tt:set(string.format('%05.2f', currtimer))
