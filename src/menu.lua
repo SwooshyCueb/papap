@@ -5,7 +5,7 @@ require("common")
 menu = class()
 
 function menu:init()
-	self.base = love.graphics.newCanvas(400, 700)
+	self.base = love.graphics.newCanvas(love.window.getWidth, love.window.getHeight)
 	self.select = nil
 	self.btns = {}
 	self.titles = {}
