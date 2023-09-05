@@ -2,7 +2,7 @@
 function love.conf(game)
     game.title = 'pipes and pipes and pipes'
     game.identity = 'papap'
-    game.version = '0.10.2'
+    game.version = '11.4'
     game.window.width = 400
     -- game.window.height = 600
     game.window.height = 648

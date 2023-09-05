@@ -468,7 +468,7 @@ function gen_piece_images()
     piece_images[PIECE_SRC] = love.graphics.newCanvas(TILE_W, TILE_H)
     src_canvas_temp1 = love.graphics.newCanvas(TILE_W, TILE_H)
 
-    love.graphics.setCanvas(src_canvas_temp1)
+    love.graphics.setCanvas({src_canvas_temp1, stencil=true})
         inner_scale = 3/4
         love.graphics.clear()
         love.graphics.setLineWidth(2)
@@ -524,7 +524,7 @@ function gen_piece_images()
         love.graphics.setColor(colors.default)
 
 
-    love.graphics.setCanvas(piece_images[PIECE_SRC])
+    love.graphics.setCanvas({piece_images[PIECE_SRC], stencil=true})
         outer_scale = 7/6
         love.graphics.clear()
         love.graphics.setLineWidth(2)

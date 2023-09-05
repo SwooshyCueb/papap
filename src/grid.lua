@@ -58,7 +58,7 @@ function Grid:get(x, y)
 end
 
 function Grid:renderstg1()
-    love.graphics.setCanvas(self.basecanvas)
+    love.graphics.setCanvas({self.basecanvas, stencil=true})
         love.graphics.setBackgroundColor(colors.invis)
         love.graphics.clear()
 
